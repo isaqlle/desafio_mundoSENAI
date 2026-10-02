@@ -1,116 +1,58 @@
-<!doctype html>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mini-App 1 — UX & Requisitos</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-  <main class="ux-page">
-    <div class="topbar">
-      <a href="/" class="back">← ESTAÇÕES</a>
-      <div class="mission">MISSÃO 01 · UX & REQUISITOS</div>
-    </div>
+<!doctype html><html lang="pt-br"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/static/style.css"><title>SmartFlow UX</title></head><body><main class="page"><div class="wrap"><div class="hero"><div class="brand"><div class="logo">⚙</div><div><span class="kicker">SMARTFLOW · ETAPA 01</span><h1>Projete o painel da fábrica</h1></div></div><div class="factory-context">🎨 EQUIPE DE UX</div></div><div class="storybar"><div class="story-step current">1 · PROJETAR</div><div class="story-step">2 · PROGRAMAR</div><div class="story-step">3 · ORGANIZAR</div><div class="story-step">4 · TESTAR</div></div><div class="missionbox">A <b>SmartFlow</b> precisa de um painel para os operadores acompanharem máquinas e alertas. Sua missão é criar uma interface que permita entender a situação da produção rapidamente.</div><div class="three">
+<section class="panel"><h2>🎛️ Decisões de design</h2><p class="start-hint">🏭 <b>Problema:</b> operadores precisam identificar rapidamente máquinas paradas, alertas e ações importantes.</p>
+<div class="choice-title">CONTRASTE</div><div class="choices" data-key="contrast"><button class="choice" data-v="baixo">☁ Baixo</button><button class="choice" data-v="alto">⚡ Alto</button></div>
+<div class="choice-title">BOTÃO DE AÇÃO</div><div class="choices" data-key="button"><button class="choice pink" data-v="forte">🚨 Destacado</button><button class="choice pink" data-v="fraco">○ Discreto</button></div>
+<div class="choice-title">NAVEGAÇÃO</div><div class="choices" data-key="menu"><button class="choice yellow" data-v="topo">▬ Topo</button><button class="choice yellow" data-v="lateral">▤ Lateral</button></div>
+<div class="choice-title">TAMANHO DO TEXTO</div><div class="choices" data-key="font"><button class="choice green" data-v="grande">A+ Grande</button><button class="choice green" data-v="pequeno">A- Pequeno</button></div>
+<div class="choice-title">STATUS DAS MÁQUINAS</div><div class="choices" data-key="status"><button class="choice purple" data-v="neutro">○ Neutro</button><button class="choice purple" data-v="cores">● Por cores</button></div>
+<div class="choice-title">ALERTAS</div><div class="choices" data-key="alerts"><button class="choice orange" data-v="prioridade">⚠ Prioridade</button><button class="choice orange" data-v="baixo">— Discretos</button></div>
+<div class="tipbox">💡 Pense como quem trabalha na fábrica: o que precisa ser visto rápido? O que deve chamar atenção? O que pode causar confusão?</div><button class="bigbtn" onclick="validateUX()">⚙ VALIDAR PAINEL</button></section>
+<section class="panel"><h2>🖥️ Painel SmartFlow</h2><div class="screen" id="screen"><aside class="sidebar"><div class="side-logo">SF</div><div class="navitem on">▦ Visão geral</div><div class="navitem">⚙ Máquinas</div><div class="navitem">⚠ Alertas</div><div class="navitem">▤ Equipe</div></aside><div class="dash"><div class="dash-top"><h3>Produção</h3><span class="badge">TURNO A</span></div><p style="font-size:11px;color:#728097">Status em tempo real</p><div class="machine-grid"><div class="machine"><b><i class="light green"></i>Prensa P-01</b><small style="display:block">Operando</small></div><div class="machine"><b><i class="light yellow"></i>Esteira E-03</b><small style="display:block">Atenção</small></div><div class="machine"><b><i class="light red"></i>Robô R-07</b><small style="display:block">Parado</small></div><div class="machine"><b><i class="light green"></i>Torno T-02</b><small style="display:block">Operando</small></div></div><div class="alert">⚠ Robô R-07 requer manutenção</div><button class="dash-action">ABRIR CHAMADO</button></div></div></section>
+<section class="panel"><h2>⚡ Análise do sistema</h2><div class="score-ring" id="ring"><span id="score">—</span></div><h3 id="verdict">Aguardando validação</h3><p class="muted" id="msg">O Python vai analisar seis decisões do seu painel.</p><div id="criteria"></div></section>
+</div></div></main><script>
+const state={contrast:"baixo",button:"fraco",menu:"topo",font:"pequeno",status:"neutro",alerts:"baixo"};
+const previewScreen=document.getElementById("screen");
+const scoreEl=document.getElementById("score");
+const ringEl=document.getElementById("ring");
+const verdictEl=document.getElementById("verdict");
+const msgEl=document.getElementById("msg");
+const criteriaEl=document.getElementById("criteria");
 
-    <section class="ux-layout">
-      <aside class="controls">
-        <span class="eyebrow">DESAFIO</span>
-        <h1>Crie uma interface fácil de usar.</h1>
-        <p>Monte uma tela para um aplicativo escolar. Faça escolhas pensando em quem vai usar.</p>
-
-        <div class="control-group">
-          <h3>1 · Contraste</h3>
-          <button data-group="contrast" data-value="high" class="choice">Alto contraste</button>
-          <button data-group="contrast" data-value="low" class="choice">Baixo contraste</button>
-        </div>
-
-        <div class="control-group">
-          <h3>2 · Botão principal</h3>
-          <button data-group="primary" data-value="solid" class="choice">Botão preenchido</button>
-          <button data-group="primary" data-value="outline" class="choice">Botão contorno</button>
-        </div>
-
-        <div class="control-group">
-          <h3>3 · Menu</h3>
-          <button data-group="menu" data-value="top" class="choice">No topo</button>
-          <button data-group="menu" data-value="bottom" class="choice">Embaixo</button>
-        </div>
-
-        <div class="control-group">
-          <h3>4 · Texto</h3>
-          <button data-group="font" data-value="large" class="choice">Grande</button>
-          <button data-group="font" data-value="small" class="choice">Pequeno</button>
-        </div>
-
-        <button id="finish" class="finish">TESTAR MEU PROTÓTIPO</button>
-      </aside>
-
-      <section class="preview-area">
-        <div class="preview-label">PRÉVIA DO APLICATIVO</div>
-        <div id="phone" class="phone">
-          <div id="phone-menu" class="phone-menu">☰  Minha Escola</div>
-          <div class="phone-content">
-            <span class="app-tag">BEM-VINDO</span>
-            <h2>Olá, estudante!</h2>
-            <p>Veja suas atividades, notas e avisos.</p>
-            <button id="main-button" class="main-button">VER ATIVIDADES</button>
-            <div class="cards">
-              <div>📚 <b>3</b><small> atividades</small></div>
-              <div>📢 <b>2</b><small> avisos</small></div>
-            </div>
-          </div>
-          <div class="phone-home">● ● ●</div>
-        </div>
-
-        <div id="result" class="result hidden"></div>
-      </section>
-    </section>
-  </main>
-
-<script>
-const choices = {contrast:null, primary:null, menu:null, font:null};
-
-document.querySelectorAll(".choice").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const group = btn.dataset.group;
-    choices[group] = btn.dataset.value;
-    document.querySelectorAll(`[data-group="${group}"]`).forEach(b => b.classList.remove("selected"));
-    btn.classList.add("selected");
-    updatePreview();
+document.querySelectorAll(".choices").forEach(group=>{
+  group.querySelectorAll(".choice").forEach(button=>{
+    button.addEventListener("click",()=>{
+      group.querySelectorAll(".choice").forEach(x=>x.classList.remove("active"));
+      button.classList.add("active");
+      state[group.dataset.key]=button.dataset.v;
+      updatePreview();
+    });
   });
 });
 
-function updatePreview() {
-  const phone = document.getElementById("phone");
-  const button = document.getElementById("main-button");
-  const menu = document.getElementById("phone-menu");
-  const content = document.querySelector(".phone-content");
-
-  phone.classList.toggle("low-contrast", choices.contrast === "low");
-  button.classList.toggle("outline", choices.primary === "outline");
-  menu.classList.toggle("bottom", choices.menu === "bottom");
-  content.classList.toggle("large-font", choices.font === "large");
+function updatePreview(){
+  previewScreen.classList.remove("low","weak","topmenu","small","nocolor","lowalert");
+  if(state.contrast==="baixo") previewScreen.classList.add("low");
+  if(state.button==="fraco") previewScreen.classList.add("weak");
+  if(state.menu==="topo") previewScreen.classList.add("topmenu");
+  if(state.font==="pequeno") previewScreen.classList.add("small");
+  if(state.status==="neutro") previewScreen.classList.add("nocolor");
+  if(state.alerts==="baixo") previewScreen.classList.add("lowalert");
 }
+updatePreview();
 
-document.getElementById("finish").addEventListener("click", async () => {
-  const result = document.getElementById("result");
-  if (Object.values(choices).some(v => !v)) {
-    result.className = "result warning";
-    result.innerHTML = "<b>Falta alguma coisa.</b><br>Faça as quatro escolhas antes de testar.";
-    return;
-  }
-
-  const response = await fetch("/api/ux/check", {
-    method: "POST",
-    headers: {"Content-Type":"application/json"},
-    body: JSON.stringify(choices)
+async function validateUX(){
+  const r=await fetch("/api/ux/check",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(state)
   });
-  const data = await response.json();
-
-  result.className = "result " + (data.completed ? "success" : "warning");
-  result.innerHTML = `<strong>${data.score}/100 pontos</strong><br>${data.feedback.map(x => "• " + x).join("<br>")}`;
-});
-</script>
-</body>
-</html>
+  const d=await r.json();
+  scoreEl.textContent=d.score+"%";
+  ringEl.style.background=`conic-gradient(var(--green) ${d.score*3.6}deg,#26354d 0)`;
+  verdictEl.textContent=d.approved?"🔥 Painel pronto para os operadores!":"🛠️ O painel precisa de ajustes";
+  msgEl.textContent=d.approved
+    ?"As informações importantes podem ser identificadas rapidamente."
+    :"Observe os requisitos abaixo e teste outras decisões.";
+  if(d.approved)document.getElementById("finishUX").classList.add("show");criteriaEl.innerHTML=d.items.map(x=>`<div class="criterion"><span class="dot ${x.ok?"ok":"no"}">${x.ok?"✓":"!"}</span><div><b>${x.name}</b><div class="muted">${x.ok?"Boa decisão para este contexto.":x.tip}</div></div></div>`).join("");
+}
+</script><div class="finish-overlay" id="finishUX"><div class="finish-card"><div class="finish-icon">🏆</div><span class="kicker">MISSÃO CONCLUÍDA</span><h2>Excelente trabalho!</h2><div class="finish-role">VOCÊ FOI ANALISTA / DESIGNER</div><p>Você transformou o problema da fábrica em decisões sobre como o sistema deve funcionar e aparecer.</p><div class="finish-concept">Você trabalhou com REQUISITOS e UX.</div><button class="finish-close" onclick="document.getElementById('finishUX').classList.remove('show')">REVER MINHA MISSÃO</button></div></div></body></html>

@@ -1,38 +1,18 @@
-# Desafio Digital — base Python
+# SmartFlow Software House Experience v8
 
-## Rodar no computador
+Reconstruída diretamente da v6 para preservar as quatro interfaces.
 
-1. Instale Python 3.
-2. Abra o terminal nesta pasta.
-3. Execute:
+Mudanças:
+- fechamento em modal fixo sobre a tela, sem alterar o layout;
+- Estação 1 mantém preview e animações;
+- Estação 2 mantém integralmente o painel direito/simulação da catraca e passa a exibir Python nos blocos;
+- Estação 3 mantém as tabelas e organização original;
+- Estação 4 mantém o layout QA em duas colunas e a investigação original.
 
-```bash
-python -m venv .venv
-```
-
-Windows:
-```bash
-.venv\Scripts\activate
-```
-
-Linux/macOS:
-```bash
-source .venv/bin/activate
-```
-
-Depois:
-
-```bash
+Executar:
 pip install -r requirements.txt
 python app.py
-```
 
-Abra no navegador:
-http://127.0.0.1:5000
 
-## Estrutura
-
-- `/` = painel das quatro estações
-- `/ux` = Mini-App 1
-- `/api/ux/check` = validação Python da missão UX
-- Mini-Apps 2, 3 e 4 serão acrescentados mantendo a independência entre as estações.
+## Correção v9
+Na Estação 4, o modal de missão concluída abre somente quando os 4 bugs foram reproduzidos (4/4).

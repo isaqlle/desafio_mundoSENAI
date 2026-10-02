@@ -1,0 +1,28 @@
+<!doctype html><html lang="pt-br"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/static/style.css"><title>SmartFlow QA</title></head><body><main class="page"><div class="wrap"><div class="hero"><div class="brand"><div class="logo">⚙</div><div><span class="kicker">SMARTFLOW · ETAPA 04</span><h1>Teste antes de liberar para a fábrica</h1></div></div><div class="factory-context">🐞 EQUIPE DE QA</div></div><div class="storybar"><div class="story-step">1 · PROJETAR</div><div class="story-step">2 · PROGRAMAR</div><div class="story-step">3 · ORGANIZAR</div><div class="story-step current">4 · TESTAR</div></div><div class="missionbox">A equipe terminou a tela de <b>abertura de ordem de manutenção</b>. Antes de instalar o SmartFlow na fábrica, encontre 4 defeitos reais. Cada bug só conta quando você realmente provocar o problema.</div><div class="qa-grid"><section class="panel"><h2>🧪 SmartFlow — versão de teste</h2><div class="fake"><div class="fakebar">⚙ Nova ordem de manutenção</div><div class="fakebody"><label>Matrícula do funcionário</label><input id="matricula" placeholder="Ex.: 10482"><label>Senha de autorização</label><input id="password" type="text" placeholder="Digite sua senha"><label>Máquina com problema</label><select id="machine"><option value="">Selecione...</option><option value="p01">Prensa P-01</option><option value="r07">Robô R-07</option><option value="e03">Esteira E-03</option></select><label>Descrição do problema</label><input id="description" placeholder="Ex.: equipamento fazendo ruído"><button class="submit" id="submit">ABRIR ORDEM DE MANUTENÇÃO</button><div class="toast" id="toast"></div></div></div><div class="qa-inconsistency"><div class="problem-title">🔎 INFORMAÇÃO DO SISTEMA</div><div class="qa-machine"><div class="qa-cell"><strong>Robô R-07</strong>Status: 🟢 Operando</div><div class="qa-cell"><strong>Manutenção</strong>Situação: EM MANUTENÇÃO</div></div><p class="hintline">Isso faz sentido? Um sistema pode abrir normalmente e ainda apresentar informações incorretas.</p></div><p class="hintline">💡 Investigue: tente dados inválidos, observe informações sensíveis, escolha máquinas diferentes e tente enviar o formulário completo e incompleto.</p></section><aside class="panel"><span class="kicker">RELATÓRIO DE TESTES</span><div class="bugcount"><span id="count">0</span>/4</div><p class="muted">bugs realmente reproduzidos</p><div id="bugs"><div class="bugitem" id="bug-matricula">⬜ BUG #01 — não descoberto</div><div class="bugitem" id="bug-senha">⬜ BUG #02 — não descoberto</div><div class="bugitem" id="bug-maquina">⬜ BUG #03 — não descoberto</div><div class="bugitem" id="bug-botao">⬜ BUG #04 — não descoberto</div></div><div class="status" id="final">Use o sistema como um testador. Não existem respostas para marcar.</div></aside></div></div></main><script>
+let found=new Set(),machineTouched=false;
+function discover(id,title){
+  if(found.has(id)) return;
+
+  found.add(id);
+
+  let e=document.getElementById("bug-"+id);
+  e.classList.add("found");
+  e.innerHTML="✅ "+title;
+
+  count.textContent=found.size;
+
+  toast.style.display="block";
+  toast.textContent="🐞 BUG REPRODUZIDO — "+found.size+"/4";
+  setTimeout(()=>toast.style.display="none",1500);
+
+  // A missão só termina depois que os QUATRO bugs forem realmente reproduzidos.
+  if(found.size===4){
+    final.innerHTML="🏆 <b>TESTE CONCLUÍDO</b><br>4 bugs reproduzidos. A versão não deve ir para produção até ser corrigida.";
+    document.getElementById("finishQA").classList.add("show");
+  }
+}
+matricula.addEventListener("blur",()=>{if(matricula.value && !/^\d{5}$/.test(matricula.value))discover("matricula","BUG #01 — Matrícula inválida é aceita")});
+password.addEventListener("input",()=>{if(password.value.length>=3)discover("senha","BUG #02 — Senha aparece em texto aberto")});
+machine.addEventListener("change",()=>{if(machine.value==="r07"){machineTouched=true;setTimeout(()=>{if(machine.value==="r07"){machine.value="e03";discover("maquina","BUG #03 — Robô R-07 vira Esteira E-03")}},650)}});
+submit.addEventListener("click",()=>{let complete=matricula.value && password.value && machine.value && description.value;if(!complete){toast.style.display="block";toast.textContent="Preencha todos os campos para testar o envio.";setTimeout(()=>toast.style.display="none",1600);return}toast.style.display="block";toast.textContent="Erro interno: ordem não foi criada.";discover("botao","BUG #04 — Formulário completo não cria a ordem")});
+</script><div class="finish-overlay" id="finishQA"><div class="finish-card"><div class="finish-icon">🏆</div><span class="kicker">MISSÃO CONCLUÍDA</span><h2>Excelente trabalho!</h2><div class="finish-role">VOCÊ FOI TESTADOR DE SOFTWARE</div><p>Você investigou o SmartFlow e encontrou defeitos antes que o sistema fosse usado na fábrica.</p><div class="finish-concept">FUNCIONAR ≠ ESTAR CORRETO · Isso é TESTE DE SOFTWARE.</div><button class="finish-close" onclick="document.getElementById('finishQA').classList.remove('show')">REVER MINHA MISSÃO</button></div></div></body></html>
