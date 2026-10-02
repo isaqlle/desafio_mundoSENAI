@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mini-App 1 — UX & Requisitos</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <main class="ux-page">
+    <div class="topbar">
+      <a href="/" class="back">← ESTAÇÕES</a>
+      <div class="mission">MISSÃO 01 · UX & REQUISITOS</div>
+    </div>
+
+    <section class="ux-layout">
+      <aside class="controls">
+        <span class="eyebrow">DESAFIO</span>
+        <h1>Crie uma interface fácil de usar.</h1>
+        <p>Monte uma tela para um aplicativo escolar. Faça escolhas pensando em quem vai usar.</p>
+
+        <div class="control-group">
+          <h3>1 · Contraste</h3>
+          <button data-group="contrast" data-value="high" class="choice">Alto contraste</button>
+          <button data-group="contrast" data-value="low" class="choice">Baixo contraste</button>
+        </div>
+
+        <div class="control-group">
+          <h3>2 · Botão principal</h3>
+          <button data-group="primary" data-value="solid" class="choice">Botão preenchido</button>
+          <button data-group="primary" data-value="outline" class="choice">Botão contorno</button>
+        </div>
+
+        <div class="control-group">
+          <h3>3 · Menu</h3>
+          <button data-group="menu" data-value="top" class="choice">No topo</button>
+          <button data-group="menu" data-value="bottom" class="choice">Embaixo</button>
+        </div>
+
+        <div class="control-group">
+          <h3>4 · Texto</h3>
+          <button data-group="font" data-value="large" class="choice">Grande</button>
+          <button data-group="font" data-value="small" class="choice">Pequeno</button>
+        </div>
+
+        <button id="finish" class="finish">TESTAR MEU PROTÓTIPO</button>
+      </aside>
+
+      <section class="preview-area">
+        <div class="preview-label">PRÉVIA DO APLICATIVO</div>
+        <div id="phone" class="phone">
+          <div id="phone-menu" class="phone-menu">☰  Minha Escola</div>
+          <div class="phone-content">
+            <span class="app-tag">BEM-VINDO</span>
+            <h2>Olá, estudante!</h2>
+            <p>Veja suas atividades, notas e avisos.</p>
+            <button id="main-button" class="main-button">VER ATIVIDADES</button>
+            <div class="cards">
+              <div>📚 <b>3</b><small> atividades</small></div>
+              <div>📢 <b>2</b><small> avisos</small></div>
+            </div>
+          </div>
+          <div class="phone-home">● ● ●</div>
+        </div>
+
+        <div id="result" class="result hidden"></div>
+      </section>
+    </section>
+  </main>
+
+<script>
+const choices = {contrast:null, primary:null, menu:null, font:null};
+
+document.querySelectorAll(".choice").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const group = btn.dataset.group;
+    choices[group] = btn.dataset.value;
+    document.querySelectorAll(`[data-group="${group}"]`).forEach(b => b.classList.remove("selected"));
+    btn.classList.add("selected");
+    updatePreview();
+  });
+});
+
+function updatePreview() {
+  const phone = document.getElementById("phone");
+  const button = document.getElementById("main-button");
+  const menu = document.getElementById("phone-menu");
+  const content = document.querySelector(".phone-content");
+
+  phone.classList.toggle("low-contrast", choices.contrast === "low");
+  button.classList.toggle("outline", choices.primary === "outline");
+  menu.classList.toggle("bottom", choices.menu === "bottom");
+  content.classList.toggle("large-font", choices.font === "large");
+}
+
+document.getElementById("finish").addEventListener("click", async () => {
+  const result = document.getElementById("result");
+  if (Object.values(choices).some(v => !v)) {
+    result.className = "result warning";
+    result.innerHTML = "<b>Falta alguma coisa.</b><br>Faça as quatro escolhas antes de testar.";
+    return;
+  }
+
+  const response = await fetch("/api/ux/check", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(choices)
+  });
+  const data = await response.json();
+
+  result.className = "result " + (data.completed ? "success" : "warning");
+  result.innerHTML = `<strong>${data.score}/100 pontos</strong><br>${data.feedback.map(x => "• " + x).join("<br>")}`;
+});
+</script>
+</body>
+</html>
