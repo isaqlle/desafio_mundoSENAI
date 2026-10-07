@@ -2,7 +2,7 @@
 
 ## SmartFlow Industrial — Do problema ao sistema
 
-**Projeto Pedagógico-Operacional | Base do Professor**
+**Projeto Pedagógico-Operacional**
 
 > Experiência interativa para apresentação do Técnico em Desenvolvimento de Sistemas a estudantes do 9º ano.
 
