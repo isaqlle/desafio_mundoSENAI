@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Stack do SmartFlow Industrial</title>
+    <style>
+        /* Estilos CSS dos Slides */
+        
+        @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap');
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e9ecef;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .slide {
+            background: white;
+            width: 85%;
+            max-width: 900px;
+            min-height: 400px;
+            margin: 30px 0;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-left: 10px solid #005A9C;
+            /* Azul SENAI */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        h1 {
+            color: #005A9C;
+            font-size: 2.5em;
+            border-bottom: 3px solid #E87722;
+            /* Laranja SENAI */
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        
+        ul {
+            font-size: 1.5em;
+            line-height: 1.8;
+            color: #444;
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        li {
+            margin-bottom: 25px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #E87722;
+        }
+        
+        .highlight {
+            font-weight: bold;
+            color: #005A9C;
+        }
+        
+        .tag {
+            background-color: #005A9C;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Slide Cabeçalho -->
+    <div class="slide">
+        <h1>Arquitetura do Projeto <span class="tag">Visão Geral</span></h1>
+        <p>Este projeto é dividido em duas partes principais: Frontend e Backend. O Frontend é a interface que o usuário vê e interage, enquanto o Backend é responsável por processar as regras e lógica do sistema de forma invisível.</p>
+        <p>Instrutor: Isaque Pontes</p>
+    </div>
+
+    <!-- Slide 1 -->
+    <div class="slide">
+        <h1>A Arquitetura do Projeto <span class="tag">Visão Geral</span></h1>
+        <ul>
+            <li><span class="highlight">Conceito:</span> Todo software moderno é dividido em partes fundamentais (Frontend e Backend).</li>
+            <li><span class="highlight">No nosso projeto:</span> O visitante do evento não vê tudo; ele interage apenas com a "casca", enquanto o "cérebro" processa as regras de cada uma das 4 estações de forma invisível.</li>
+        </ul>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide">
+        <h1>Frontend <span class="tag">O Rosto do Sistema</span></h1>
+        <ul>
+            <li><span class="highlight">O que é:</span> O HTML cria o "esqueleto" (botões, textos) e o CSS aplica o estilo visual (cores, tamanhos e alinhamentos).</li>
+            <li><span class="highlight">Por que usamos no projeto?</span> É fundamental para a <strong>Estação 1 (UX e Requisitos)</strong>. O visitante precisa entender conceitos de contraste e interface amigável. É o HTML/CSS que permite validar se o botão
+                ou a cor de fundo estão acessíveis.</li>
+        </ul>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide">
+        <h1>Backend <span class="tag">O Cérebro</span></h1>
+        <ul>
+            <li><span class="highlight">O que é:</span> Python é a linguagem de programação principal, e o Flask (na versão 3.1.0) é o framework que cria o servidor.</li>
+            <li><span class="highlight">Por que usamos no projeto?</span> O Python e o Flask recebem as ações do usuário através de rotas (como <code>/api/ux/check</code> ou <code>/api/logica/check</code>) e executam validações e regras no backend antes de
+                devolver a resposta visual para a tela.</li>
+        </ul>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="slide">
+        <h1>Lógica de Sistemas <span class="tag">Python na Prática</span></h1>
+        <ul>
+            <li><span class="highlight">O que é:</span> O uso de estruturas condicionais lógicas (<code>if</code>, <code>else</code>, <code>==</code>).</li>
+            <li><span class="highlight">Por que usamos no projeto?</span> Na <strong>Estação 2 (Lógica de Sistemas)</strong>, o sistema precisa avaliar uma sequência de decisões (como validar crachá, turno e EPI) para liberar ou bloquear o acesso do funcionário.</li>
+        </ul>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="slide">
+        <h1>Modelagem de Dados e Banco <span class="tag">Python + SQLite</span></h1>
+        <ul>
+            <li><span class="highlight">O que é:</span> O uso de Dicionários em Python (listas de dados em pares) e integração com banco de dados SQLite (<code>sqlite3</code>).</li>
+            <li><span class="highlight">Por que usamos no projeto?</span> Na <strong>Estação 3 (Modelagem de Dados)</strong>, precisamos organizar as informações de forma limpa, associando nomes a categorias específicas (ex: "Ana Souza" é identificada como
+                funcionário, "Robô R-07" é identificado como máquina).</li>
+        </ul>
+    </div>
+
+    <!-- Slide Pesquise os Conceitos apresentados acima -->
+    <div class="slide">
+        <h1>Pesquise os Conceitos e um exemplo prático de utilização</h1>
+        <ul>
+            <li><span class="highlight">Frontend:</span> HTML, CSS, JavaScript, React, Angular.</li>
+            <li><span class="highlight">Backend:</span> Python, Flask, Django, Node.js.</li>
+            <li><span class="highlight">Lógica de Sistemas:</span> Estruturas condicionais, operadores lógicos, fluxogramas.</li>
+            <li><span class="highlight">Modelagem de Dados e Banco:</span> Dicionários em Python, SQLite, MySQL, PostgreSQL.</li>
+        </ul>
+    </div>
+
+</body>
+
+</html>
