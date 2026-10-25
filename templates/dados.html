@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="/static/style.css">
-    <title>SmartFlow Dados</title>
+    <title>SmartFlow · Banco de Dados</title>
 </head>
 
 <body>
@@ -13,108 +13,273 @@
         <div class="wrap">
             <div class="hero">
                 <div class="brand">
-                    <div class="logo">⚙</div>
+                    <div class="logo">🗃️</div>
                     <div><span class="kicker">SMARTFLOW · ETAPA 03</span>
-                        <h1>Estruture os dados da fábrica</h1>
+                        <h1>Construa o banco de dados da fábrica</h1>
                     </div>
                 </div>
                 <div class="factory-context">🗃️ EQUIPE DE DADOS</div>
             </div>
             <nav class="storybar" aria-label="Navegar entre as estações"><a href="/ux" class="story-step">1 · PROJETAR</a><a href="/logica" class="story-step">2 · PROGRAMAR</a><a href="/dados" class="story-step current" aria-current="page">3 · ORGANIZAR</a><a href="/testes" class="story-step">4 · TESTAR</a></nav>
-
-        </div>
-        <div class="missionbox">Funcionários, máquinas, setores e equipamentos de proteção foram importados para o novo <b>SmartFlow</b>, mas chegaram misturados. Organize os 12 registros no banco industrial.</div>
-        <div class="data-layout">
-            <section class="panel">
-                <h2>📦 Registros importados</h2>
-                <p class="muted">Selecione um cartão e depois clique na tabela correta.</p>
-                <div class="cards" id="cards"></div>
-                <div class="tipbox">💡 Pergunte: “o que esta informação representa?” Pessoa, equipamento, setor da fábrica ou proteção?</div><button class="bigbtn" onclick="validate()">⚡ VALIDAR BANCO</button>
-                <div class="status" id="out">0 de 12 registros organizados.</div>
-            </section>
-            <section class="panel">
-                <h2>🧱 Banco SmartFlow</h2>
-                <div class="tables">
-                    <div class="tablebox" data-table="funcionarios">
-                        <h3 style="color:#28d7f7">👷 FUNCIONÁRIOS</h3>
-                        <div class="rows"></div>
-                    </div>
-                    <div class="tablebox" data-table="maquinas">
-                        <h3 style="color:#ff9b42">⚙ MÁQUINAS</h3>
-                        <div class="rows"></div>
-                    </div>
-                    <div class="tablebox" data-table="setores">
-                        <h3 style="color:#bf82ff">🏭 SETORES</h3>
-                        <div class="rows"></div>
-                    </div>
-                    <div class="tablebox" data-table="epis">
-                        <h3 style="color:#6cf0b6">⛑ EPIs</h3>
-                        <div class="rows"></div>
-                    </div>
-                </div>
-            </section>
-        </div>
+            <div class="missionbox">🎯 <b>Sua missão:</b> crie 3 registros para cada tabela da fábrica. Depois, os cartões serão embaralhados: organize os dados que <b>você mesmo cadastrou!</b></div>
+            <div class="data3-progress" aria-label="Etapas da missão"><span id="stepOne" class="on">1 · CADASTRAR</span><span id="stepTwo">2 · ORGANIZAR</span><strong id="counter">0/12 registros</strong></div>
+            <div class="data3-layout">
+                <section class="panel" id="leftPanel">
+                    <h2 id="leftTitle">✍️ Cadastre informações</h2>
+                    <p class="muted" id="leftDescription">Escolha uma tabela e dê nomes aos seus registros. Você pode inventar nomes criativos!</p>
+                    <div id="registerStage">
+                        <div class="data3-tabs" id="tabs"></div><label class="data3-label" for="recordName" id="fieldLabel">Nome da informação</label>
+                        <div class="data3-entry"><input id="recordName" type="text" maxlength="42" autocomplete="off" placeholder="Ex.: Robô Gigante 3000"><button type="button" id="addRecord" class="data3-button">＋ CADASTRAR</button></div>
+                        <p class="data3-note" id="inputMessage" role="status">Cadastre três nomes nesta tabela.</p>
+                        <div class="tipbox" id="registerHint">💡 Uma tabela agrupa dados do mesmo tipo. Pense no que essa informação representa na fábrica.</div><button type="button" id="startSorting" class="bigbtn" disabled>🔀 EMBARALHAR E ORGANIZAR</button></div>
+                    <div id="sortStage" hidden>
+                        <div class="cards data3-cards" id="cards"></div>
+                        <div class="tipbox" id="sortHint">💡 Primeiro toque em um cartão neutro; depois toque na tabela correta. O sistema verifica onde você o cadastrou originalmente.</div><button type="button" id="validateData" class="bigbtn">⚡ VALIDAR BANCO</button><button type="button"
+                            id="backToRegister" class="clear data3-secondary">↩ VOLTAR AO CADASTRO</button></div>
+                    <div class="status" id="out" role="status" aria-live="polite">0 de 12 registros cadastrados.</div>
+                </section>
+                <section class="panel">
+                    <h2>🧱 Banco SmartFlow</h2>
+                    <p class="muted" id="rightDescription">Veja suas tabelas ganhando registros enquanto você cadastra.</p>
+                    <div class="tables data3-tables" id="tables"></div>
+                    <div class="tipbox" id="tableHint">💡 O nome da tabela indica o tipo de informação armazenada. Cada nome cadastrado é um registro.</div>
+                </section>
+            </div>
         </div>
     </main>
-    <script>
-        let items = [
-                ["Ana Souza", "emp", "👷"],
-                ["Prensa P-01", "mach", "⚙"],
-                ["Manutenção", "sect", "🏭"],
-                ["Capacete", "epi", "⛑"],
-                ["Carlos Lima", "emp", "👷"],
-                ["Robô R-07", "mach", "🤖"],
-                ["Produção", "sect", "🏭"],
-                ["Óculos", "epi", "🥽"],
-                ["João Alves", "emp", "👷"],
-                ["Esteira E-03", "mach", "⚙"],
-                ["Qualidade", "sect", "🏭"],
-                ["Protetor auricular", "epi", "🎧"]
-            ],
-            selected = null,
-            answers = {};
-        cards.innerHTML = items.map(([n, c, i]) => `<div class="data-card ${c}" data-name="${n}">${i} ${n}</div>`).join("");
-        document.querySelectorAll(".data-card").forEach(c => c.onclick = () => {
-            document.querySelectorAll(".data-card").forEach(x => x.classList.remove("selected"));
-            c.classList.add("selected");
-            selected = c.dataset.name
-        });
-        document.querySelectorAll(".tablebox").forEach(t => t.onclick = () => {
-            if (!selected) return;
-            answers[selected] = t.dataset.table;
-            render();
-            selected = null;
-            document.querySelectorAll(".data-card").forEach(x => x.classList.remove("selected"))
-        });
-
-        function render() {
-            document.querySelectorAll(".rows").forEach(r => r.innerHTML = "");
-            Object.entries(answers).forEach(([n, t]) => document.querySelector(`.tablebox[data-table="${t}"] .rows`).innerHTML += `<div class="row">${n}</div>`);
-            out.textContent = `${Object.keys(answers).length} de 12 registros organizados.`
-        }
-        async function validate() {
-            let r = await fetch("/api/dados/check", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    answers
-                })
-            });
-            let d = await r.json();
-            out.textContent = d.approved ? "🎉 BANCO INDUSTRIAL ORGANIZADO — 12/12 corretos!" : `🧩 ${d.correct}/12 registros corretos. Reorganize os que parecem estar na tabela errada.`;
-            if (d.approved) document.getElementById("finishData").classList.add("show")
-        }
-    </script>
     <div class="finish-overlay" id="finishData">
         <div class="finish-card">
             <div class="finish-icon">🏆</div><span class="kicker">MISSÃO CONCLUÍDA</span>
             <h2>Excelente trabalho!</h2>
             <div class="finish-role">VOCÊ FOI MODELADOR DE DADOS</div>
-            <p>Você organizou funcionários, máquinas, setores e EPIs para o sistema localizar cada informação.</p>
-            <div class="finish-concept">Você trabalhou com MODELAGEM DE DADOS.</div><button class="finish-close" onclick="document.getElementById('finishData').classList.remove('show')">REVER MINHA MISSÃO</button></div>
+            <p>Você cadastrou 12 informações e organizou tudo nas tabelas do banco da fábrica.</p>
+            <div class="finish-concept">Você trabalhou com BANCO DE DADOS.</div><button class="finish-close" id="reviewMission">REVER MINHA MISSÃO</button></div>
     </div>
+    <script>
+        (() => {
+            const definitions = [{
+                id: 'funcionarios',
+                label: 'FUNCIONÁRIOS',
+                icon: '👷',
+                example: 'Ex.: Ana Souza',
+                hint: 'Cadastre nomes de pessoas que trabalham na fábrica.'
+            }, {
+                id: 'maquinas',
+                label: 'MÁQUINAS',
+                icon: '⚙️',
+                example: 'Ex.: Robô Gigante 3000',
+                hint: 'Cadastre nomes de máquinas que a fábrica utiliza.'
+            }, {
+                id: 'setores',
+                label: 'SETORES',
+                icon: '🏭',
+                example: 'Ex.: Produção',
+                hint: 'Cadastre nomes de espaços ou áreas de trabalho.'
+            }, {
+                id: 'epis',
+                label: 'EPIs',
+                icon: '⛑️',
+                example: 'Ex.: Capacete',
+                hint: 'Cadastre equipamentos de proteção individual.'
+            }];
+            const byId = id => document.getElementById(id);
+            const records = [];
+            const answers = new Map();
+            let current = 'funcionarios';
+            let selected = null;
+            let sorting = false;
+            let nextId = 0;
+            const count = (id) => records.filter(r => r.table === id).length;
+            const total = () => records.length;
+
+            function node(tag, cls, value) {
+                const el = document.createElement(tag);
+                if (cls) el.className = cls;
+                if (value !== undefined) el.textContent = value;
+                return el;
+            }
+
+            function renderTabs() {
+                const holder = byId('tabs');
+                holder.replaceChildren();
+                for (const d of definitions) {
+                    const btn = node('button', 'data3-tab' + (current === d.id ? ' active' : ''), `${d.icon} ${d.label}  ${count(d.id)}/3`);
+                    btn.type = 'button';
+                    btn.setAttribute('aria-pressed', String(current === d.id));
+                    btn.addEventListener('click', () => {
+                        current = d.id;
+                        byId('inputMessage').textContent = d.hint;
+                        update();
+                        byId('recordName').focus();
+                    });
+                    holder.append(btn);
+                }
+            }
+
+            function renderTables() {
+                const holder = byId('tables');
+                holder.replaceChildren();
+                for (const d of definitions) {
+                    const box = node('div', 'tablebox data3-table');
+                    box.dataset.table = d.id;
+                    const title = node('h3', '', `${d.icon} ${d.label}`);
+                    const rows = node('div', 'rows');
+                    const own = sorting ? records.filter(r => answers.get(r.id) === d.id) : records.filter(r => r.table === d.id);
+                    for (const r of own) {
+                        rows.append(node('div', 'row', r.name));
+                    }
+                    for (let x = own.length; x < 3; x++) {
+                        rows.append(node('div', 'data3-placeholder', '— Vazio —'));
+                    }
+                    box.append(title, rows);
+                    if (sorting) {
+                        box.setAttribute('role', 'button');
+                        box.tabIndex = 0;
+                        box.setAttribute('aria-label', `Colocar cartão selecionado na tabela ${d.label}`);
+                        box.onclick = () => place(d.id);
+                        box.onkeydown = e => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                place(d.id);
+                            }
+                        };
+                    }
+                    holder.append(box);
+                }
+            }
+
+            function shuffle(items) {
+                const a = items.slice();
+                for (let i = a.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [a[i], a[j]] = [a[j], a[i]];
+                }
+                return a;
+            }
+            let randomOrder = [];
+
+            function renderCards() {
+                const holder = byId('cards');
+                holder.replaceChildren();
+                for (const r of randomOrder) {
+                    const card = node('button', 'data-card data3-neutral' + (selected === r.id ? ' selected' : '') + (answers.has(r.id) ? ' assigned' : ''), r.name);
+                    card.type = 'button';
+                    card.setAttribute('aria-pressed', String(selected === r.id));
+                    card.title = answers.has(r.id) ? 'Toque para mover este cartão' : 'Toque para selecionar';
+                    card.onclick = () => {
+                        selected = r.id;
+                        renderCards();
+                        byId('out').textContent = `${r.name} selecionado. Agora toque na tabela de destino.`;
+                    };
+                    holder.append(card);
+                }
+            }
+
+            function place(table) {
+                if (!sorting || selected === null) return;
+                const existing = [...answers.values()].filter(v => v === table).length;
+                if (existing >= 3 && answers.get(selected) !== table) {
+                    byId('out').textContent = 'Essa tabela já tem 3 registros. Escolha outra ou mova um cartão.';
+                    return;
+                }
+                answers.set(selected, table);
+                selected = null;
+                renderCards();
+                renderTables();
+                byId('counter').textContent = `${answers.size}/12 organizados`;
+                byId('out').textContent = `${answers.size} de 12 registros organizados. Você pode selecionar um cartão para movê-lo.`;
+            }
+
+            function update() {
+                const d = definitions.find(d => d.id === current);
+                renderTabs();
+                byId('fieldLabel').textContent = `Nome para ${d.label.toLowerCase()}`;
+                byId('recordName').placeholder = d.example;
+                byId('recordName').disabled = count(current) >= 3;
+                byId('addRecord').disabled = count(current) >= 3;
+                byId('registerHint').textContent = '💡 ' + d.hint;
+                byId('startSorting').disabled = total() !== 12;
+                byId('counter').textContent = `${total()}/12 cadastrados`;
+                renderTables();
+            }
+
+            function add() {
+                const value = byId('recordName').value.trim().replace(/\s+/g, ' ');
+                if (!value) {
+                    byId('inputMessage').textContent = 'Digite um nome para cadastrar.';
+                    return;
+                }
+                if (count(current) >= 3) {
+                    byId('inputMessage').textContent = 'Esta tabela já tem 3 registros. Escolha outra.';
+                    return;
+                }
+                records.push({
+                    id: 'r' + (++nextId),
+                    name: value,
+                    table: current
+                });
+                byId('recordName').value = '';
+                byId('inputMessage').textContent = `✅ “${value}” cadastrado! ${count(current)}/3 nesta tabela.`;
+                if (total() === 12) byId('out').textContent = '🎉 Cadastro completo! Toque em EMBARALHAR E ORGANIZAR.';
+                else byId('out').textContent = `${total()} de 12 registros cadastrados.`;
+                update();
+            }
+            byId('addRecord').onclick = add;
+            byId('recordName').addEventListener('keydown', e => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    add();
+                }
+            });
+            byId('startSorting').onclick = () => {
+                if (total() !== 12) return;
+                sorting = true;
+                answers.clear();
+                selected = null;
+                randomOrder = shuffle(records);
+                byId('registerStage').hidden = true;
+                byId('sortStage').hidden = false;
+                byId('leftTitle').textContent = '🔀 Organize seus registros';
+                byId('leftDescription').textContent = 'Todos os cartões estão neutros: descubra a tabela usando o que você mesmo cadastrou.';
+                byId('rightDescription').textContent = 'Toque em um cartão e depois na tabela em que ele deve ficar.';
+                byId('stepOne').classList.remove('on');
+                byId('stepTwo').classList.add('on');
+                byId('counter').textContent = '0/12 organizados';
+                byId('out').textContent = 'Selecione um dos cartões e depois toque na tabela correta.';
+                renderCards();
+                renderTables();
+            };
+            byId('backToRegister').onclick = () => {
+                sorting = false;
+                answers.clear();
+                selected = null;
+                byId('registerStage').hidden = false;
+                byId('sortStage').hidden = true;
+                byId('leftTitle').textContent = '✍️ Cadastre informações';
+                byId('leftDescription').textContent = 'Escolha uma tabela e dê nomes aos seus registros. Você pode inventar nomes criativos!';
+                byId('rightDescription').textContent = 'Veja suas tabelas ganhando registros enquanto você cadastra.';
+                byId('stepOne').classList.add('on');
+                byId('stepTwo').classList.remove('on');
+                byId('out').textContent = `${total()} de 12 registros cadastrados.`;
+                update();
+            };
+            byId('validateData').onclick = () => {
+                if (answers.size < 12) {
+                    byId('out').textContent = `Você organizou ${answers.size}/12 cartões. Preencha as posições vazias antes de validar.`;
+                    return;
+                }
+                const errors = records.filter(r => answers.get(r.id) !== r.table);
+                if (errors.length) {
+                    byId('out').textContent = `🧩 ${12-errors.length}/12 corretos. Revise onde colocou os cartões; nenhuma cor revela a resposta.`;
+                    return;
+                }
+                byId('out').textContent = '🎉 BANCO ORGANIZADO — 12/12 corretos!';
+                byId('finishData').classList.add('show');
+            };
+            byId('reviewMission').onclick = () => byId('finishData').classList.remove('show');
+            update();
+        })();
+    </script>
 </body>
 
 </html>
