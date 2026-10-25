@@ -69,3 +69,30 @@
 .storybar a.story-step:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
 .storybar a.story-step.current{color:#7eefff;font-weight:950;border-color:#28d7f77d}
 @media(max-width:550px){.storybar{grid-template-columns:repeat(2,minmax(0,1fr))}.storybar a.story-step{font-size:12px}}
+
+/* Estação 3: cadastro autoral e cartões neutros */
+.data3-progress{display:flex;align-items:center;gap:9px;margin-bottom:13px;flex-wrap:wrap}.data3-progress span{border:1px solid #ffffff22;padding:9px 15px;border-radius:10px;color:#a8b6cc;font-size:13px;font-weight:900}.data3-progress span.on{color:#83ebff;border-color:#28d7f777;background:#28d7f716}.data3-progress strong{margin-left:auto;color:#fff;font-size:14px}.data3-layout{display:grid;grid-template-columns:minmax(370px,.9fr) minmax(480px,1.1fr);gap:16px}.data3-tabs{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:18px 0}.data3-tab{min-height:54px;border:1px solid #ffffff25;background:#20314a;border-radius:12px;color:#e7f2ff;font-weight:900;font-size:15px;cursor:pointer}.data3-tab.active{background:#15495b;border-color:#28d7f7;color:#fff}.data3-label{display:block;margin:12px 0 8px;font-size:16px;font-weight:850}.data3-entry{display:flex;gap:8px}.data3-entry input{flex:1;min-width:0;border:1px solid #62768d;border-radius:11px;padding:14px 12px;background:#081528;color:#fff;font-size:16px}.data3-button{border:0;border-radius:11px;padding:10px 15px;background:#42e69b;color:#061c18;font-weight:900;font-size:14px;cursor:pointer}.data3-button:disabled,.data3-layout .bigbtn:disabled{opacity:.42;cursor:not-allowed}.data3-note{color:#bcd0e9;font-size:14px;min-height:24px}.data3-tables .tablebox{cursor:default;min-height:208px}.data3-tables .tablebox h3{font-size:16px;color:#f1f6ff}.data3-tables .row{font-size:15px;padding:10px 11px;overflow-wrap:anywhere}.data3-placeholder{font-size:14px;color:#7389a5;padding:10px 11px;margin:5px 0;border:1px dashed #ffffff16;border-radius:8px}.data3-tables .tablebox[role=button]{cursor:pointer;transition:border-color .15s,background .15s}.data3-tables .tablebox[role=button]:hover,.data3-tables .tablebox[role=button]:focus-visible{border-color:#28d7f7;background:#28d7f70c;outline:none}.data3-cards{margin:16px 0;grid-template-columns:repeat(2,minmax(0,1fr))}.data3-cards .data3-neutral{background:#263449!important;border:2px solid #64758a;color:#f3f7ff!important;min-height:57px;font-size:15px;text-align:center;line-height:1.3;overflow-wrap:anywhere}.data3-cards .data3-neutral:hover{background:#334662!important}.data3-cards .data3-neutral.selected{border-color:#fff;box-shadow:0 0 0 3px #ffffff2c}.data3-cards .data3-neutral.assigned{opacity:.75;border-style:dashed}.data3-secondary{margin-top:10px;width:100%;font-size:14px}.data3-layout .muted{font-size:15px}.data3-layout .tipbox{font-size:14px}.data3-layout .panel h2{font-size:22px}[hidden]{display:none!important}@media(max-width:980px){.data3-layout{grid-template-columns:1fr}}@media(max-width:520px){.data3-entry{flex-direction:column}.data3-progress strong{margin-left:0}.data3-tabs{grid-template-columns:1fr 1fr}.data3-cards{grid-template-columns:1fr 1fr}}
+
+/* Estação 1: prioriza as decisões e a prévia interativa; análise compacta. */
+.ux-workspace{grid-template-columns:320px minmax(410px,1fr) 245px;align-items:start}
+.ux-workspace .panel{min-width:0}
+.ux-workspace .screen{max-width:100%}
+.ux-workspace .ux-analysis{padding:15px;align-self:start}
+.ux-analysis h2{font-size:18px;margin-bottom:8px}
+.ux-analysis .score-ring{width:82px;height:82px;margin:9px auto}
+.ux-analysis .score-ring:after{width:62px;height:62px}
+.ux-analysis .score-ring span{font-size:21px}
+.ux-analysis h3{font-size:16px;margin:10px 0 6px;text-align:center}
+.ux-analysis #msg{font-size:13px;margin:4px 0 8px;text-align:center}
+.ux-analysis .criterion{padding:7px 0;font-size:12px}
+.ux-analysis .dot{width:24px;height:24px}
+@media(max-width:1100px){
+ .ux-workspace{grid-template-columns:minmax(280px,320px) minmax(390px,1fr)}
+ .ux-workspace>section:nth-child(2){grid-column:2;grid-row:1 / span 2}
+ .ux-workspace .ux-analysis{grid-column:1;grid-row:2;width:100%}
+}
+@media(max-width:760px){
+ .ux-workspace{grid-template-columns:1fr}
+ .ux-workspace>section:nth-child(2),.ux-workspace .ux-analysis{grid-column:auto;grid-row:auto}
+ .ux-workspace .screen{width:min(390px,100%)}
+}
