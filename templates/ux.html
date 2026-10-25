@@ -1,144 +1,58 @@
-<!doctype html>
-<html lang="pt-br">
+<!doctype html><html lang="pt-br"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/static/style.css"><title>SmartFlow UX</title></head><body><main class="page"><div class="wrap"><div class="hero"><div class="brand"><div class="logo">⚙</div><div><span class="kicker">SMARTFLOW · ETAPA 01</span><h1>Projete o painel da fábrica</h1></div></div><div class="factory-context">🎨 EQUIPE DE UX</div></div><nav class="storybar" aria-label="Navegar entre as estações"><a href="/ux" class="story-step current" aria-current="page">1 · PROJETAR</a><a href="/logica" class="story-step">2 · PROGRAMAR</a><a href="/dados" class="story-step">3 · ORGANIZAR</a><a href="/testes" class="story-step">4 · TESTAR</a></nav><div class="missionbox">A <b>SmartFlow</b> precisa de um painel para os operadores acompanharem máquinas e alertas. Sua missão é criar uma interface que permita entender a situação da produção rapidamente.</div><div class="three ux-workspace">
+<section class="panel"><h2>🎛️ Decisões de design</h2><p class="start-hint">🏭 <b>Problema:</b> operadores precisam identificar rapidamente máquinas paradas, alertas e ações importantes.</p>
+<div class="choice-title">CONTRASTE</div><div class="choices" data-key="contrast"><button class="choice" data-v="baixo">☁ Baixo</button><button class="choice" data-v="alto">⚡ Alto</button></div>
+<div class="choice-title">BOTÃO DE AÇÃO</div><div class="choices" data-key="button"><button class="choice pink" data-v="forte">🚨 Destacado</button><button class="choice pink" data-v="fraco">○ Discreto</button></div>
+<div class="choice-title">NAVEGAÇÃO</div><div class="choices" data-key="menu"><button class="choice yellow" data-v="topo">▬ Topo</button><button class="choice yellow" data-v="lateral">▤ Lateral</button></div>
+<div class="choice-title">TAMANHO DO TEXTO</div><div class="choices" data-key="font"><button class="choice green" data-v="grande">A+ Grande</button><button class="choice green" data-v="pequeno">A- Pequeno</button></div>
+<div class="choice-title">STATUS DAS MÁQUINAS</div><div class="choices" data-key="status"><button class="choice purple" data-v="neutro">○ Neutro</button><button class="choice purple" data-v="cores">● Por cores</button></div>
+<div class="choice-title">ALERTAS</div><div class="choices" data-key="alerts"><button class="choice orange" data-v="prioridade">⚠ Prioridade</button><button class="choice orange" data-v="baixo">— Discretos</button></div>
+<div class="tipbox">💡 Pense como quem trabalha na fábrica: o que precisa ser visto rápido? O que deve chamar atenção? O que pode causar confusão?</div><button class="bigbtn" onclick="validateUX()">⚙ VALIDAR PAINEL</button></section>
+<section class="panel"><h2>🖥️ Painel SmartFlow</h2><div class="screen" id="screen"><aside class="sidebar"><div class="side-logo">SF</div><div class="navitem on">▦ Visão geral</div><div class="navitem">⚙ Máquinas</div><div class="navitem">⚠ Alertas</div><div class="navitem">▤ Equipe</div></aside><div class="dash"><div class="dash-top"><h3>Produção</h3><span class="badge">TURNO A</span></div><p style="font-size:11px;color:#728097">Status em tempo real</p><div class="machine-grid"><div class="machine"><b><i class="light green"></i>Prensa P-01</b><small style="display:block">Operando</small></div><div class="machine"><b><i class="light yellow"></i>Esteira E-03</b><small style="display:block">Atenção</small></div><div class="machine"><b><i class="light red"></i>Robô R-07</b><small style="display:block">Parado</small></div><div class="machine"><b><i class="light green"></i>Torno T-02</b><small style="display:block">Operando</small></div></div><div class="alert">⚠ Robô R-07 requer manutenção</div><button class="dash-action">ABRIR CHAMADO</button></div></div></section>
+<section class="panel ux-analysis"><h2>⚡ Análise do sistema</h2><div class="score-ring" id="ring"><span id="score">—</span></div><h3 id="verdict">Aguardando validação</h3><p class="muted" id="msg">O Python vai analisar seis decisões do seu painel.</p><div id="criteria"></div></section>
+</div></div></main><script>
+const state={contrast:"baixo",button:"fraco",menu:"topo",font:"pequeno",status:"neutro",alerts:"baixo"};
+const previewScreen=document.getElementById("screen");
+const scoreEl=document.getElementById("score");
+const ringEl=document.getElementById("ring");
+const verdictEl=document.getElementById("verdict");
+const msgEl=document.getElementById("msg");
+const criteriaEl=document.getElementById("criteria");
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="/static/style.css">
-    <title>SmartFlow UX</title>
-</head>
+document.querySelectorAll(".choices").forEach(group=>{
+  group.querySelectorAll(".choice").forEach(button=>{
+    button.addEventListener("click",()=>{
+      group.querySelectorAll(".choice").forEach(x=>x.classList.remove("active"));
+      button.classList.add("active");
+      state[group.dataset.key]=button.dataset.v;
+      updatePreview();
+    });
+  });
+});
 
-<body>
-    <main class="page">
-        <div class="wrap">
-            <div class="hero">
-                <div class="brand">
-                    <div class="logo">⚙</div>
-                    <div><span class="kicker">SMARTFLOW · ETAPA 01</span>
-                        <h1>Projete o painel da fábrica</h1>
-                    </div>
-                </div>
-                <div class="factory-context">🎨 EQUIPE DE UX</div>
-            </div>
-            <nav class="storybar" aria-label="Navegar entre as estações"><a href="/ux" class="story-step current" aria-current="page">1 · PROJETAR</a><a href="/logica" class="story-step">2 · PROGRAMAR</a><a href="/dados" class="story-step">3 · ORGANIZAR</a><a href="/testes" class="story-step">4 · TESTAR</a></nav>
+function updatePreview(){
+  previewScreen.classList.remove("low","weak","topmenu","small","nocolor","lowalert");
+  if(state.contrast==="baixo") previewScreen.classList.add("low");
+  if(state.button==="fraco") previewScreen.classList.add("weak");
+  if(state.menu==="topo") previewScreen.classList.add("topmenu");
+  if(state.font==="pequeno") previewScreen.classList.add("small");
+  if(state.status==="neutro") previewScreen.classList.add("nocolor");
+  if(state.alerts==="baixo") previewScreen.classList.add("lowalert");
+}
+updatePreview();
 
-        </div>
-        <div class="missionbox">A <b>SmartFlow</b> precisa de um painel para os operadores acompanharem máquinas e alertas. Sua missão é criar uma interface que permita entender a situação da produção rapidamente.</div>
-        <div class="three">
-            <section class="panel">
-                <h2>🎛️ Decisões de design</h2>
-                <p class="start-hint">🏭 <b>Problema:</b> operadores precisam identificar rapidamente máquinas paradas, alertas e ações importantes.</p>
-                <div class="choice-title">CONTRASTE</div>
-                <div class="choices" data-key="contrast"><button class="choice" data-v="baixo">☁ Baixo</button><button class="choice" data-v="alto">⚡ Alto</button></div>
-                <div class="choice-title">BOTÃO DE AÇÃO</div>
-                <div class="choices" data-key="button"><button class="choice pink" data-v="forte">🚨 Destacado</button><button class="choice pink" data-v="fraco">○ Discreto</button></div>
-                <div class="choice-title">NAVEGAÇÃO</div>
-                <div class="choices" data-key="menu"><button class="choice yellow" data-v="topo">▬ Topo</button><button class="choice yellow" data-v="lateral">▤ Lateral</button></div>
-                <div class="choice-title">TAMANHO DO TEXTO</div>
-                <div class="choices" data-key="font"><button class="choice green" data-v="grande">A+ Grande</button><button class="choice green" data-v="pequeno">A- Pequeno</button></div>
-                <div class="choice-title">STATUS DAS MÁQUINAS</div>
-                <div class="choices" data-key="status"><button class="choice purple" data-v="neutro">○ Neutro</button><button class="choice purple" data-v="cores">● Por cores</button></div>
-                <div class="choice-title">ALERTAS</div>
-                <div class="choices" data-key="alerts"><button class="choice orange" data-v="prioridade">⚠ Prioridade</button><button class="choice orange" data-v="baixo">— Discretos</button></div>
-                <div class="tipbox">💡 Pense como quem trabalha na fábrica: o que precisa ser visto rápido? O que deve chamar atenção? O que pode causar confusão?</div><button class="bigbtn" onclick="validateUX()">⚙ VALIDAR PAINEL</button></section>
-            <section class="panel">
-                <h2>🖥️ Painel SmartFlow</h2>
-                <div class="screen" id="screen">
-                    <aside class="sidebar">
-                        <div class="side-logo">SF</div>
-                        <div class="navitem on">▦ Visão geral</div>
-                        <div class="navitem">⚙ Máquinas</div>
-                        <div class="navitem">⚠ Alertas</div>
-                        <div class="navitem">▤ Equipe</div>
-                    </aside>
-                    <div class="dash">
-                        <div class="dash-top">
-                            <h3>Produção</h3><span class="badge">TURNO A</span></div>
-                        <p style="font-size:11px;color:#728097">Status em tempo real</p>
-                        <div class="machine-grid">
-                            <div class="machine"><b><i class="light green"></i>Prensa P-01</b><small style="display:block">Operando</small></div>
-                            <div class="machine"><b><i class="light yellow"></i>Esteira E-03</b><small style="display:block">Atenção</small></div>
-                            <div class="machine"><b><i class="light red"></i>Robô R-07</b><small style="display:block">Parado</small></div>
-                            <div class="machine"><b><i class="light green"></i>Torno T-02</b><small style="display:block">Operando</small></div>
-                        </div>
-                        <div class="alert">⚠ Robô R-07 requer manutenção</div><button class="dash-action">ABRIR CHAMADO</button></div>
-                </div>
-            </section>
-            <section class="panel">
-                <h2>⚡ Análise do sistema</h2>
-                <div class="score-ring" id="ring"><span id="score">—</span></div>
-                <h3 id="verdict">Aguardando validação</h3>
-                <p class="muted" id="msg">O Python vai analisar seis decisões do seu painel.</p>
-                <div id="criteria"></div>
-            </section>
-        </div>
-        </div>
-    </main>
-    <script>
-        const state = {
-            contrast: "baixo",
-            button: "fraco",
-            menu: "topo",
-            font: "pequeno",
-            status: "neutro",
-            alerts: "baixo"
-        };
-        const previewScreen = document.getElementById("screen");
-        const scoreEl = document.getElementById("score");
-        const ringEl = document.getElementById("ring");
-        const verdictEl = document.getElementById("verdict");
-        const msgEl = document.getElementById("msg");
-        const criteriaEl = document.getElementById("criteria");
-
-        document.querySelectorAll(".choices").forEach(group => {
-            group.querySelectorAll(".choice").forEach(button => {
-                button.addEventListener("click", () => {
-                    group.querySelectorAll(".choice").forEach(x => x.classList.remove("active"));
-                    button.classList.add("active");
-                    state[group.dataset.key] = button.dataset.v;
-                    updatePreview();
-                });
-            });
-        });
-
-        function updatePreview() {
-            previewScreen.classList.remove("low", "weak", "topmenu", "small", "nocolor", "lowalert");
-            if (state.contrast === "baixo") previewScreen.classList.add("low");
-            if (state.button === "fraco") previewScreen.classList.add("weak");
-            if (state.menu === "topo") previewScreen.classList.add("topmenu");
-            if (state.font === "pequeno") previewScreen.classList.add("small");
-            if (state.status === "neutro") previewScreen.classList.add("nocolor");
-            if (state.alerts === "baixo") previewScreen.classList.add("lowalert");
-        }
-        updatePreview();
-
-        async function validateUX() {
-            const r = await fetch("/api/ux/check", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(state)
-            });
-            const d = await r.json();
-            scoreEl.textContent = d.score + "%";
-            ringEl.style.background = `conic-gradient(var(--green) ${d.score*3.6}deg,#26354d 0)`;
-            verdictEl.textContent = d.approved ? "🔥 Painel pronto para os operadores!" : "🛠️ O painel precisa de ajustes";
-            msgEl.textContent = d.approved ?
-                "As informações importantes podem ser identificadas rapidamente." :
-                "Observe os requisitos abaixo e teste outras decisões.";
-            if (d.approved) document.getElementById("finishUX").classList.add("show");
-            criteriaEl.innerHTML = d.items.map(x => `<div class="criterion"><span class="dot ${x.ok?"ok":"no"}">${x.ok?"✓":"!"}</span><div><b>${x.name}</b><div class="muted">${x.ok?"Boa decisão para este contexto.":x.tip}</div></div></div>`).join("");
-        }
-    </script>
-    <div class="finish-overlay" id="finishUX">
-        <div class="finish-card">
-            <div class="finish-icon">🏆</div><span class="kicker">MISSÃO CONCLUÍDA</span>
-            <h2>Excelente trabalho!</h2>
-            <div class="finish-role">VOCÊ FOI ANALISTA / DESIGNER</div>
-            <p>Você transformou o problema da fábrica em decisões sobre como o sistema deve funcionar e aparecer.</p>
-            <div class="finish-concept">Você trabalhou com REQUISITOS e UX.</div><button class="finish-close" onclick="document.getElementById('finishUX').classList.remove('show')">REVER MINHA MISSÃO</button></div>
-    </div>
-</body>
-
-</html>
+async function validateUX(){
+  const r=await fetch("/api/ux/check",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(state)
+  });
+  const d=await r.json();
+  scoreEl.textContent=d.score+"%";
+  ringEl.style.background=`conic-gradient(var(--green) ${d.score*3.6}deg,#26354d 0)`;
+  verdictEl.textContent=d.approved?"🔥 Painel pronto para os operadores!":"🛠️ O painel precisa de ajustes";
+  msgEl.textContent=d.approved
+    ?"As informações importantes podem ser identificadas rapidamente."
+    :"Observe os requisitos abaixo e teste outras decisões.";
+  if(d.approved)document.getElementById("finishUX").classList.add("show");criteriaEl.innerHTML=d.items.map(x=>`<div class="criterion"><span class="dot ${x.ok?"ok":"no"}">${x.ok?"✓":"!"}</span><div><b>${x.name}</b><div class="muted">${x.ok?"Boa decisão para este contexto.":x.tip}</div></div></div>`).join("");
+}
+</script><div class="finish-overlay" id="finishUX"><div class="finish-card"><div class="finish-icon">🏆</div><span class="kicker">MISSÃO CONCLUÍDA</span><h2>Excelente trabalho!</h2><div class="finish-role">VOCÊ FOI ANALISTA / DESIGNER</div><p>Você transformou o problema da fábrica em decisões sobre como o sistema deve funcionar e aparecer.</p><div class="finish-concept">Você trabalhou com REQUISITOS e UX.</div><button class="finish-close" onclick="document.getElementById('finishUX').classList.remove('show')">REVER MINHA MISSÃO</button></div></div></body></html>
