@@ -1,59 +1,848 @@
 <!doctype html>
-<html lang="pt-br"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/static/style.css"><title>SmartFlow · Estação 2 — Programação</title>
-<style>
-.logic-layout{display:grid;grid-template-columns:minmax(290px,.94fr) minmax(300px,1.04fr) minmax(285px,.85fr);gap:13px;align-items:start}
-.logic-panel{padding:16px;min-width:0}.logic-panel h2{font-size:19px;margin:0 0 8px}.logic-small{font-size:12px;color:var(--muted);line-height:1.4}.logic-label{font-size:11px;font-weight:900;color:#c8e5fa;letter-spacing:.5px;margin:12px 0 7px}.logic-pool{display:flex;flex-direction:column;gap:7px}.logic-piece{display:flex;gap:9px;align-items:center;border:1px solid #ffffff4b;background:#233654;border-radius:11px;padding:9px;color:white;text-align:left;cursor:grab;min-height:58px;width:100%;touch-action:manipulation}.logic-piece:focus-visible,.logic-slot:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}.logic-piece.selected{border-color:var(--yellow);background:#514625}.logic-piece.in-use{opacity:.45}.logic-piece .em{font-size:24px;flex:none}.logic-piece code{display:block;font-size:11px;color:#bfeeff;white-space:normal;overflow-wrap:anywhere;margin-top:4px}.logic-piece strong{font-size:12px}.logic-piece .mini{font-size:10px;color:#becde3}.logic-slot{display:flex;gap:8px;align-items:center;text-align:left;width:100%;min-height:63px;margin:0 0 7px;padding:8px 10px;border:2px dashed #60748f;border-radius:11px;background:#0b1b2e;color:#dbe6f6;cursor:pointer}.logic-slot.filled{border-style:solid;border-color:#3e9cb7;background:#132c3c}.logic-slot.dragover{background:#244463;border-color:var(--yellow)}.logic-slot .number{font-size:12px;font-weight:900;color:var(--cyan);flex:none;width:23px}.logic-slot .slot-body{flex:1;min-width:0}.logic-slot strong{font-size:12px}.logic-slot code{display:block;font-size:11px;white-space:pre-wrap;color:#bfeeff;overflow-wrap:anywhere}.logic-slot .remove{font-size:19px;flex:none;color:#ffbdbd}.logic-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.logic-actions button{margin:0;flex:1;font-size:12px}.logic-info{border:1px solid #4d72ff66;background:#142846;border-radius:12px;padding:11px;font-size:12px;line-height:1.45;color:#edf5ff;margin-top:10px}.logic-info.warn{border-color:#ffb04c;background:#40301b}.logic-info.good{border-color:#42e69b;background:#123e34}.logic-code{background:#071323;border:1px solid #3c5678;border-radius:12px;padding:10px;overflow:auto;max-height:340px}.logic-line{padding:5px 5px;border-radius:6px;font-family:Consolas,monospace;font-size:11px;white-space:pre;line-height:1.4;color:#d4e5fd}.logic-line.active{background:#245a46;color:#fff;box-shadow:inset 3px 0 var(--green)}.logic-line .ln{color:#7895b9;display:inline-block;width:21px;user-select:none}.logic-tip{background:#22324b;border-left:3px solid var(--cyan);padding:10px;border-radius:8px;margin-top:10px;font-size:12px;line-height:1.45}.logic-visual{display:flex;justify-content:center;align-items:center;gap:10px;margin:15px 0;font-size:34px}.logic-visual .arrow{color:#96a9c8;font-size:18px}.logic-scenario{padding:12px;background:#21324b;border-radius:12px;margin:10px 0;font-size:12px}.logic-scenario b{color:#f9fbff}.logic-checks{display:flex;flex-wrap:wrap;gap:6px}.logic-checks .check{font-size:11px}.logic-checks .check.pending{color:#b7c6da;background:#ffffff12}.logic-progress{font-size:12px;color:#9fdcf7;margin:9px 0}.logic-next{width:100%}.logic-hint{margin-top:13px}.logic-hint summary{cursor:pointer;color:var(--cyan);font-weight:800;font-size:12px}.logic-hint p{font-size:12px;line-height:1.4}.logic-minihead{font-size:12px;color:#a5d9f2}
-@media(max-width:1100px){.logic-layout{grid-template-columns:1fr 1fr}.logic-layout>.logic-panel:last-child{grid-column:1/-1}}@media(max-width:700px){.logic-layout{grid-template-columns:1fr}.logic-layout>.logic-panel:last-child{grid-column:auto}.logic-piece{min-height:50px}}@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
-</style></head><body><main class="page"><div class="wrap"><div class="hero"><div class="brand"><div class="logo">⚙</div><div><span class="kicker">SMARTFLOW · ESTAÇÃO 02</span><h1>Programe o acesso à fábrica</h1></div></div><div class="factory-context">💻 DESENVOLVIMENTO DE SISTEMAS</div></div>
-<div class="storybar"><div class="story-step">1 · PROJETAR</div><div class="story-step current">2 · PROGRAMAR</div><div class="story-step">3 · ORGANIZAR</div><div class="story-step">4 · TESTAR</div></div>
-<div class="missionbox">🎯 <b>Sua missão:</b> montar um programa Python que verifica <b>crachá, turno e EPI</b> antes de abrir a catraca. Arraste os comandos para as <b>6 posições</b>, ou toque em um comando e depois na posição desejada.</div>
-<div class="logic-layout">
-<section class="panel logic-panel" aria-labelledby="available"><h2 id="available">🧩 Comandos disponíveis</h2><div class="logic-small">Cada bloco representa uma instrução ou um pequeno trecho de Python. Escolha a ordem em que o programa deve funcionar.</div><div class="logic-label">BANCO DE COMANDOS</div><div id="pool" class="logic-pool"></div><div class="logic-tip">💡 <b>Programar é dar instruções.</b> Uma variável guarda uma informação; <code>if</code> significa “se”; <code>else</code> significa “senão”.</div></section>
-<section class="panel logic-panel" aria-labelledby="editor"><h2 id="editor">⌨️ Meu programa</h2><span class="python-tag">PYTHON · controle_acesso.py</span><div class="logic-small" style="margin-top:8px">Solte cada comando em uma posição numerada. Para trocar, arraste um bloco sobre outro. Para retirar, toque na posição preenchida sem selecionar um comando.</div><div class="logic-label">SEQUÊNCIA DE EXECUÇÃO <span id="counter">0/6</span></div><div id="slots"></div><div class="logic-actions"><button class="run" id="runBtn" type="button">▶ TESTAR PROGRAMA</button><button class="clear" id="resetBtn" type="button">↻ RECOMEÇAR</button></div><div id="feedback" class="logic-info" role="status" aria-live="polite">Monte as seis partes do código para testar sua lógica.</div><details class="logic-hint"><summary>💡 Precisa de uma dica?</summary><p>O programa começa com <code>def</code>. Depois lê as informações, toma a decisão com <code>if</code> e finalmente abre ou bloqueia a catraca.</p></details></section>
-<section class="panel logic-panel" aria-labelledby="factory"><h2 id="factory">🏭 Código em ação</h2><div class="logic-small">Quando você testar a sequência correta, observe as linhas Python sendo executadas e o efeito na fábrica.</div><div class="logic-label">CÓDIGO PYTHON FORMADO</div><div id="codePreview" class="logic-code" aria-label="Prévia do código Python"></div><div class="logic-label">SIMULADOR DE CATRACA</div><div class="logic-scenario" id="person">👷 Funcionário aguardando programação</div><div class="logic-visual" aria-hidden="true"><span>👷</span><span class="arrow">→</span><span id="gate">🚧</span><span class="arrow">→</span><span>🏭</span></div><div class="logic-checks"><span class="check pending" id="checkCracha">🪪 Crachá · ?</span><span class="check pending" id="checkTurno">🕒 Turno · ?</span><span class="check pending" id="checkEpi">🦺 EPI · ?</span></div><div id="stepInfo" class="logic-info">A simulação começa após testar seu programa.</div><div id="progress" class="logic-progress">Aguardando código.</div><button type="button" id="nextBtn" class="run logic-next" disabled>PRÓXIMA INSTRUÇÃO →</button><div class="logic-tip">🔎 <b>Olhe para o código:</b> a linha iluminada indica a instrução que o computador está executando.</div></section>
-</div></div></main>
-<div class="finish-overlay" id="finishLogic"><div class="finish-card"><div class="finish-icon">🏆</div><span class="kicker">MISSÃO CONCLUÍDA</span><h2>Você programou uma catraca!</h2><div class="finish-role">VOCÊ FOI DESENVOLVEDOR</div><p>Você montou uma lógica em Python, verificou condições e testou o comportamento da catraca em três situações diferentes.</p><div class="finish-concept">O código controla decisões reais de um sistema.</div><button class="finish-close" type="button" id="finishClose">REVER MINHA MISSÃO</button></div></div>
-<script>
-'use strict';
-const commands = [
- {id:'inicio',icon:'🚀',title:'Iniciar o programa',code:'def controlar_acesso():',lines:['def controlar_acesso():']},
- {id:'cracha',icon:'🪪',title:'Ler o crachá',code:'cracha = ler_cracha()',lines:['    cracha = ler_cracha()']},
- {id:'turno',icon:'🕒',title:'Verificar o turno',code:'turno = verificar_turno()',lines:['    turno = verificar_turno()']},
- {id:'epi',icon:'🦺',title:'Verificar o EPI',code:'epi = verificar_epi()',lines:['    epi = verificar_epi()']},
- {id:'decisao',icon:'🧠',title:'Tomar uma decisão',code:'if cracha and turno and epi:',lines:['    if cracha and turno and epi:']},
- {id:'resultado',icon:'🚦',title:'Liberar ou bloquear',code:'liberar_acesso()  /  bloquear_acesso()',lines:['        liberar_acesso()','    else:','        bloquear_acesso()']}
-];
-const byId = Object.fromEntries(commands.map(c=>[c.id,c]));
-const correct = commands.map(c=>c.id);
-const shuffled = ['decisao','inicio','resultado','epi','cracha','turno'];
-const slots = Array(6).fill(null);
-let selected=null, dragId=null, playing=false, scenario=0, step=0, completion=false;
-const people=[
- {name:'Ana',turno:'A',values:[true,true,true],result:'LIBERADO'},
- {name:'Carlos',turno:'B',values:[true,false,true],result:'BLOQUEADO'},
- {name:'João',turno:'A',values:[true,true,false],result:'BLOQUEADO'}
-];
-const $=id=>document.getElementById(id);
-function el(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e}
-function block(id){const c=byId[id], b=el('button','logic-piece'+(selected===id?' selected':'')+(slots.includes(id)?' in-use':''));b.type='button';b.draggable=true;b.dataset.id=id;b.setAttribute('aria-pressed',String(selected===id));b.append(el('span','em',c.icon));const content=el('span');content.append(el('strong','',c.title),el('code','',c.code));b.append(content);b.addEventListener('click',()=>{if(playing)return;selected=(selected===id?null:id);render()});b.addEventListener('dragstart',e=>{if(playing){e.preventDefault();return}dragId=id;e.dataTransfer.setData('text/plain',id);e.dataTransfer.effectAllowed='move'});b.addEventListener('dragend',()=>{dragId=null});return b}
-function place(id,index){if(playing||!byId[id])return;const old=slots.indexOf(id);const displaced=slots[index];if(old>=0)slots[old]=displaced||null;slots[index]=id;selected=null;clearSimulation();setFeedback('Continue montando o programa. Use “Testar programa” para conferir a sequência.','');render()}
-function slotElement(index){const id=slots[index],b=el('button','logic-slot'+(id?' filled':''));b.type='button';b.dataset.index=index;b.append(el('span','number',`${index+1}º`));const body=el('span','slot-body');if(id){const c=byId[id];body.append(el('strong','',c.icon+' '+c.title),el('code','',c.code));b.append(body,el('span','remove','×'))}else{body.textContent='Solte um comando aqui';b.append(body)}b.setAttribute('aria-label',`${index+1}ª posição: ${id?byId[id].title:'vazia'}`);b.addEventListener('click',()=>{if(playing)return;if(selected){place(selected,index)}else if(id){slots[index]=null;clearSimulation();setFeedback('Comando retirado. Escolha outro bloco para ocupar a posição.','');render()}});b.draggable=!!id;b.addEventListener('dragstart',e=>{if(playing||!id){e.preventDefault();return}dragId=id;e.dataTransfer.setData('text/plain',id);e.dataTransfer.effectAllowed='move'});b.addEventListener('dragover',e=>{if(playing)return;e.preventDefault();b.classList.add('dragover')});b.addEventListener('dragleave',()=>b.classList.remove('dragover'));b.addEventListener('drop',e=>{e.preventDefault();b.classList.remove('dragover');const id=e.dataTransfer.getData('text/plain')||dragId;place(id,index)});return b}
-function linesForPreview(){if(playing||completion)return commands.flatMap(c=>c.lines);return slots.flatMap(id=>id?byId[id].lines:[])}
-function renderCode(active=-1){const code=$('codePreview');code.replaceChildren();const lines=linesForPreview();if(!lines.length){code.append(el('div','logic-line','// Arraste blocos para formar seu código'));return}lines.forEach((line,i)=>{const row=el('div','logic-line'+(i===active?' active':''));row.append(el('span','ln',String(i+1).padStart(2,'0')+' '),document.createTextNode(line));code.append(row)})}
-function render(){const pool=$('pool'),area=$('slots');pool.replaceChildren();area.replaceChildren();shuffled.forEach(id=>pool.append(block(id)));slots.forEach((_,i)=>area.append(slotElement(i)));$('counter').textContent=slots.filter(Boolean).length+'/6';$('runBtn').disabled=playing;renderCode()}
-function setFeedback(message,kind){$('feedback').textContent=message;$('feedback').className='logic-info'+(kind?' '+kind:'')}
-function clearSimulation(){playing=false;completion=false;scenario=0;step=0;$('person').textContent='👷 Funcionário aguardando programação';$('gate').textContent='🚧';['checkCracha','checkTurno','checkEpi'].forEach(id=>{$(id).className='check pending';$(id).textContent=({checkCracha:'🪪 Crachá · ?',checkTurno:'🕒 Turno · ?',checkEpi:'🦺 EPI · ?'})[id]});$('stepInfo').textContent='A simulação começa após testar seu programa.';$('progress').textContent='Aguardando código.';$('nextBtn').disabled=true;$('nextBtn').textContent='PRÓXIMA INSTRUÇÃO →';$('finishLogic').classList.remove('show')}
-async function run(){if(playing)return;if(slots.some(x=>!x)){setFeedback(`Faltam ${slots.filter(x=>!x).length} posição(ões). Preencha os seis espaços antes de executar.`,'warn');return}const btn=$('runBtn');btn.disabled=true;try{const r=await fetch('/api/logica/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sequence:slots})});if(!r.ok)throw Error('Erro HTTP');const data=await r.json();if(!data.correct){const first=slots.findIndex((id,i)=>id!==correct[i]);setFeedback(`Há uma instrução fora de ordem. Revise a posição ${first+1}º: qual informação o computador precisa ter nesse momento?`,'warn');return}playing=true;completion=true;scenario=0;step=0;setFeedback('✅ Sequência correta! Agora veja cada instrução agir na catraca.','good');showStep();render()}catch(e){setFeedback('Não foi possível verificar a sequência. Confira se a aplicação Flask está em execução.','warn')}finally{btn.disabled=playing}}
-const steps=[
- {line:0,info:'🚀 O programa de controle de acesso começa.'},
- {line:1,info:'🪪 O sistema lê o crachá do funcionário.',field:0},
- {line:2,info:'🕒 O sistema confere se o turno está autorizado.',field:1},
- {line:3,info:'🦺 O sistema confere o EPI obrigatório.',field:2},
- {line:4,info:'🧠 if verifica se as três condições são verdadeiras.'},
- {line:null,info:'🚦 A catraca libera ou bloqueia conforme a decisão.'}
-];
-function showStep(){const person=people[scenario],st=steps[step];$('person').textContent=`👷 ${person.name} · Turno ${person.turno} · Cenário ${scenario+1}/3`;$('progress').textContent=`Cenário ${scenario+1}/3 · Instrução ${step+1}/6`;$('stepInfo').textContent=st.info;const ids=['checkCracha','checkTurno','checkEpi'],names=['🪪 Crachá','🕒 Turno','🦺 EPI'];ids.forEach((id,j)=>{const known=step>=j+1;$(id).className='check '+(known?(person.values[j]?'pass':'fail'):'pending');$(id).textContent=names[j]+' · '+(known?(person.values[j]?'OK':'NÃO'):'?')});$('gate').textContent=step<5?'🚧':person.values.every(Boolean)?'🟢':'🔒';renderCode(step===5?(person.values.every(Boolean)?5:7):st.line);$('nextBtn').disabled=false;$('nextBtn').textContent=step===5?(scenario===2?'CONCLUIR MISSÃO ✓':'PRÓXIMO FUNCIONÁRIO →'):'PRÓXIMA INSTRUÇÃO →'}
-function advance(){if(!playing)return;if(step<5){step++;showStep();return}if(scenario<2){scenario++;step=0;showStep();return}playing=false;$('nextBtn').disabled=true;$('progress').textContent='✅ 3 cenários testados!';setFeedback('🎉 Programa aprovado em três testes: um acesso liberado e dois bloqueados.','good');$('finishLogic').classList.add('show')}
-function reset(){slots.fill(null);selected=null;clearSimulation();setFeedback('Monte as seis partes do código para testar sua lógica.','');render()}
-$('runBtn').addEventListener('click',run);$('resetBtn').addEventListener('click',reset);$('nextBtn').addEventListener('click',advance);$('finishClose').addEventListener('click',()=>$('finishLogic').classList.remove('show'));render();
-</script></body></html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>SmartFlow · Estação 2 — Programação</title>
+    <style>
+        .logic-layout {
+            display: grid;
+            grid-template-columns: minmax(290px, .94fr) minmax(300px, 1.04fr) minmax(285px, .85fr);
+            gap: 13px;
+            align-items: start
+        }
+        
+        .logic-panel {
+            padding: 16px;
+            min-width: 0
+        }
+        
+        .logic-panel h2 {
+            font-size: 19px;
+            margin: 0 0 8px
+        }
+        
+        .logic-small {
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.4
+        }
+        
+        .logic-label {
+            font-size: 11px;
+            font-weight: 900;
+            color: #c8e5fa;
+            letter-spacing: .5px;
+            margin: 12px 0 7px
+        }
+        
+        .logic-pool {
+            display: flex;
+            flex-direction: column;
+            gap: 7px
+        }
+        
+        .logic-piece {
+            display: flex;
+            gap: 9px;
+            align-items: center;
+            border: 1px solid #ffffff4b;
+            background: #233654;
+            border-radius: 11px;
+            padding: 9px;
+            color: white;
+            text-align: left;
+            cursor: grab;
+            min-height: 58px;
+            width: 100%;
+            touch-action: manipulation
+        }
+        
+        .logic-piece:focus-visible,
+        .logic-slot:focus-visible {
+            outline: 3px solid var(--cyan);
+            outline-offset: 2px
+        }
+        
+        .logic-piece.selected {
+            border-color: var(--yellow);
+            background: #514625
+        }
+        
+        .logic-piece.in-use {
+            opacity: .45
+        }
+        
+        .logic-piece .em {
+            font-size: 24px;
+            flex: none
+        }
+        
+        .logic-piece code {
+            display: block;
+            font-size: 11px;
+            color: #bfeeff;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            margin-top: 4px
+        }
+        
+        .logic-piece strong {
+            font-size: 12px
+        }
+        
+        .logic-piece .mini {
+            font-size: 10px;
+            color: #becde3
+        }
+        
+        .logic-slot {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            text-align: left;
+            width: 100%;
+            min-height: 63px;
+            margin: 0 0 7px;
+            padding: 8px 10px;
+            border: 2px dashed #60748f;
+            border-radius: 11px;
+            background: #0b1b2e;
+            color: #dbe6f6;
+            cursor: pointer
+        }
+        
+        .logic-slot.filled {
+            border-style: solid;
+            border-color: #3e9cb7;
+            background: #132c3c
+        }
+        
+        .logic-slot.dragover {
+            background: #244463;
+            border-color: var(--yellow)
+        }
+        
+        .logic-slot .number {
+            font-size: 12px;
+            font-weight: 900;
+            color: var(--cyan);
+            flex: none;
+            width: 23px
+        }
+        
+        .logic-slot .slot-body {
+            flex: 1;
+            min-width: 0
+        }
+        
+        .logic-slot strong {
+            font-size: 12px
+        }
+        
+        .logic-slot code {
+            display: block;
+            font-size: 11px;
+            white-space: pre-wrap;
+            color: #bfeeff;
+            overflow-wrap: anywhere
+        }
+        
+        .logic-slot .remove {
+            font-size: 19px;
+            flex: none;
+            color: #ffbdbd
+        }
+        
+        .logic-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: 10px
+        }
+        
+        .logic-actions button {
+            margin: 0;
+            flex: 1;
+            font-size: 12px
+        }
+        
+        .logic-info {
+            border: 1px solid #4d72ff66;
+            background: #142846;
+            border-radius: 12px;
+            padding: 11px;
+            font-size: 12px;
+            line-height: 1.45;
+            color: #edf5ff;
+            margin-top: 10px
+        }
+        
+        .logic-info.warn {
+            border-color: #ffb04c;
+            background: #40301b
+        }
+        
+        .logic-info.good {
+            border-color: #42e69b;
+            background: #123e34
+        }
+        
+        .logic-code {
+            background: #071323;
+            border: 1px solid #3c5678;
+            border-radius: 12px;
+            padding: 10px;
+            overflow: auto;
+            max-height: 340px
+        }
+        
+        .logic-line {
+            padding: 5px 5px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 11px;
+            white-space: pre;
+            line-height: 1.4;
+            color: #d4e5fd
+        }
+        
+        .logic-line.active {
+            background: #245a46;
+            color: #fff;
+            box-shadow: inset 3px 0 var(--green)
+        }
+        
+        .logic-line .ln {
+            color: #7895b9;
+            display: inline-block;
+            width: 21px;
+            user-select: none
+        }
+        
+        .logic-tip {
+            background: #22324b;
+            border-left: 3px solid var(--cyan);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 12px;
+            line-height: 1.45
+        }
+        
+        .logic-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+            font-size: 34px
+        }
+        
+        .logic-visual .arrow {
+            color: #96a9c8;
+            font-size: 18px
+        }
+        
+        .logic-scenario {
+            padding: 12px;
+            background: #21324b;
+            border-radius: 12px;
+            margin: 10px 0;
+            font-size: 12px
+        }
+        
+        .logic-scenario b {
+            color: #f9fbff
+        }
+        
+        .logic-checks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px
+        }
+        
+        .logic-checks .check {
+            font-size: 11px
+        }
+        
+        .logic-checks .check.pending {
+            color: #b7c6da;
+            background: #ffffff12
+        }
+        
+        .logic-progress {
+            font-size: 12px;
+            color: #9fdcf7;
+            margin: 9px 0
+        }
+        
+        .logic-next {
+            width: 100%
+        }
+        
+        .logic-hint {
+            margin-top: 13px
+        }
+        
+        .logic-hint summary {
+            cursor: pointer;
+            color: var(--cyan);
+            font-weight: 800;
+            font-size: 12px
+        }
+        
+        .logic-hint p {
+            font-size: 12px;
+            line-height: 1.4
+        }
+        
+        .logic-minihead {
+            font-size: 12px;
+            color: #a5d9f2
+        }
+        
+        @media(max-width:1100px) {
+            .logic-layout {
+                grid-template-columns: 1fr 1fr
+            }
+            .logic-layout>.logic-panel:last-child {
+                grid-column: 1/-1
+            }
+        }
+        
+        @media(max-width:700px) {
+            .logic-layout {
+                grid-template-columns: 1fr
+            }
+            .logic-layout>.logic-panel:last-child {
+                grid-column: auto
+            }
+            .logic-piece {
+                min-height: 50px
+            }
+        }
+        
+        @media (prefers-reduced-motion:reduce) {
+            * {
+                scroll-behavior: auto!important
+            }
+        }
+        /* Estação 2 — leitura facilitada e espaços proporcionais */
+        
+        @media (min-width:1101px) {
+            .logic-layout {
+                grid-template-columns: minmax(255px, .79fr) minmax(345px, 1.1fr) minmax(345px, 1.11fr);
+                gap: 12px
+            }
+        }
+        
+        .logic-panel {
+            padding: 15px
+        }
+        
+        .logic-panel h2 {
+            font-size: 22px
+        }
+        
+        .logic-small,
+        .logic-tip,
+        .logic-info,
+        .logic-scenario,
+        .logic-hint p {
+            font-size: 14px;
+            line-height: 1.5
+        }
+        
+        .logic-label {
+            font-size: 12px
+        }
+        
+        .logic-piece {
+            min-height: 60px;
+            padding: 10px;
+            gap: 9px
+        }
+        
+        .logic-piece strong,
+        .logic-slot strong {
+            font-size: 15px;
+            line-height: 1.3
+        }
+        
+        .logic-piece code,
+        .logic-slot code {
+            font-size: 13px;
+            line-height: 1.45
+        }
+        
+        .logic-piece .em {
+            font-size: 25px
+        }
+        
+        .logic-slot {
+            min-height: 65px;
+            padding: 10px
+        }
+        
+        .logic-slot .number {
+            font-size: 15px;
+            width: 27px
+        }
+        
+        .logic-actions button {
+            font-size: 14px
+        }
+        
+        .logic-line {
+            font-size: 13px;
+            line-height: 1.5
+        }
+        
+        .logic-line .ln {
+            width: 25px
+        }
+        
+        .logic-checks .check,
+        .logic-progress,
+        .logic-hint summary {
+            font-size: 13px
+        }
+        
+        .logic-visual {
+            font-size: 39px
+        }
+        
+        .logic-visual .arrow {
+            font-size: 20px
+        }
+        
+        .logic-next {
+            font-size: 14px
+        }
+        
+        @media(max-width:1100px) {
+            .logic-layout {
+                grid-template-columns: minmax(270px, .84fr) minmax(350px, 1.16fr)
+            }
+            .logic-layout>.logic-panel:last-child {
+                grid-column: 1/-1
+            }
+        }
+        
+        @media(max-width:700px) {
+            .logic-layout {
+                grid-template-columns: 1fr
+            }
+            .logic-layout>.logic-panel:last-child {
+                grid-column: auto
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="page">
+        <div class="wrap">
+            <div class="hero">
+                <div class="brand">
+                    <div class="logo">⚙</div>
+                    <div><span class="kicker">SMARTFLOW · ESTAÇÃO 02</span>
+                        <h1>Programe o acesso à fábrica</h1>
+                    </div>
+                </div>
+                <div class="factory-context">💻 DESENVOLVIMENTO DE SISTEMAS</div>
+            </div>
+            <nav class="storybar" aria-label="Navegar entre as estações"><a href="/ux" class="story-step">1 · PROJETAR</a><a href="/logica" class="story-step current" aria-current="page">2 · PROGRAMAR</a><a href="/dados" class="story-step">3 · ORGANIZAR</a><a href="/testes" class="story-step">4 · TESTAR</a></nav>
+
+        </div>
+        <div class="missionbox">🎯 <b>Sua missão:</b> montar um programa Python que verifica <b>crachá, turno e EPI</b> antes de abrir a catraca. Arraste os comandos para as <b>6 posições</b>, ou toque em um comando e depois na posição desejada.</div>
+        <div class="logic-layout">
+            <section class="panel logic-panel" aria-labelledby="available">
+                <h2 id="available">🧩 Comandos disponíveis</h2>
+                <div class="logic-small">Cada bloco representa uma instrução ou um pequeno trecho de Python. Escolha a ordem em que o programa deve funcionar.</div>
+                <div class="logic-label">BANCO DE COMANDOS</div>
+                <div id="pool" class="logic-pool"></div>
+                <div class="logic-tip">💡 <b>Programar é dar instruções.</b> Uma variável guarda uma informação; <code>if</code> significa “se”; <code>else</code> significa “senão”.</div>
+            </section>
+            <section class="panel logic-panel" aria-labelledby="editor">
+                <h2 id="editor">⌨️ Meu programa</h2><span class="python-tag">PYTHON · controle_acesso.py</span>
+                <div class="logic-small" style="margin-top:8px">Solte cada comando em uma posição numerada. Para trocar, arraste um bloco sobre outro. Para retirar, toque na posição preenchida sem selecionar um comando.</div>
+                <div class="logic-label">SEQUÊNCIA DE EXECUÇÃO <span id="counter">0/6</span></div>
+                <div id="slots"></div>
+                <div class="logic-actions"><button class="run" id="runBtn" type="button">▶ TESTAR PROGRAMA</button><button class="clear" id="resetBtn" type="button">↻ RECOMEÇAR</button></div>
+                <div id="feedback" class="logic-info" role="status" aria-live="polite">Monte as seis partes do código para testar sua lógica.</div>
+                <details class="logic-hint">
+                    <summary>💡 Precisa de uma dica?</summary>
+                    <p>O programa começa com <code>def</code>. Depois lê as informações, toma a decisão com <code>if</code> e finalmente abre ou bloqueia a catraca.</p>
+                </details>
+            </section>
+            <section class="panel logic-panel" aria-labelledby="factory">
+                <h2 id="factory">🏭 Código em ação</h2>
+                <div class="logic-small">Quando você testar a sequência correta, observe as linhas Python sendo executadas e o efeito na fábrica.</div>
+                <div class="logic-label">CÓDIGO PYTHON FORMADO</div>
+                <div id="codePreview" class="logic-code" aria-label="Prévia do código Python"></div>
+                <div class="logic-label">SIMULADOR DE CATRACA</div>
+                <div class="logic-scenario" id="person">👷 Funcionário aguardando programação</div>
+                <div class="logic-visual" aria-hidden="true"><span>👷</span><span class="arrow">→</span><span id="gate">🚧</span><span class="arrow">→</span><span>🏭</span></div>
+                <div class="logic-checks"><span class="check pending" id="checkCracha">🪪 Crachá · ?</span><span class="check pending" id="checkTurno">🕒 Turno · ?</span><span class="check pending" id="checkEpi">🦺 EPI · ?</span></div>
+                <div id="stepInfo" class="logic-info">A simulação começa após testar seu programa.</div>
+                <div id="progress" class="logic-progress">Aguardando código.</div><button type="button" id="nextBtn" class="run logic-next" disabled>PRÓXIMA INSTRUÇÃO →</button>
+                <div class="logic-tip">🔎 <b>Olhe para o código:</b> a linha iluminada indica a instrução que o computador está executando.</div>
+            </section>
+        </div>
+        </div>
+    </main>
+    <div class="finish-overlay" id="finishLogic">
+        <div class="finish-card">
+            <div class="finish-icon">🏆</div><span class="kicker">MISSÃO CONCLUÍDA</span>
+            <h2>Você programou uma catraca!</h2>
+            <div class="finish-role">VOCÊ FOI DESENVOLVEDOR</div>
+            <p>Você montou uma lógica em Python, verificou condições e testou o comportamento da catraca em três situações diferentes.</p>
+            <div class="finish-concept">O código controla decisões reais de um sistema.</div><button class="finish-close" type="button" id="finishClose">REVER MINHA MISSÃO</button></div>
+    </div>
+    <script>
+        'use strict';
+        const commands = [{
+            id: 'inicio',
+            icon: '🚀',
+            title: 'Iniciar o programa',
+            code: 'def controlar_acesso():',
+            lines: ['def controlar_acesso():']
+        }, {
+            id: 'cracha',
+            icon: '🪪',
+            title: 'Ler o crachá',
+            code: 'cracha = ler_cracha()',
+            lines: ['    cracha = ler_cracha()']
+        }, {
+            id: 'turno',
+            icon: '🕒',
+            title: 'Verificar o turno',
+            code: 'turno = verificar_turno()',
+            lines: ['    turno = verificar_turno()']
+        }, {
+            id: 'epi',
+            icon: '🦺',
+            title: 'Verificar o EPI',
+            code: 'epi = verificar_epi()',
+            lines: ['    epi = verificar_epi()']
+        }, {
+            id: 'decisao',
+            icon: '🧠',
+            title: 'Tomar uma decisão',
+            code: 'if cracha and turno and epi:',
+            lines: ['    if cracha and turno and epi:']
+        }, {
+            id: 'resultado',
+            icon: '🚦',
+            title: 'Liberar ou bloquear',
+            code: 'liberar_acesso()  /  bloquear_acesso()',
+            lines: ['        liberar_acesso()', '    else:', '        bloquear_acesso()']
+        }];
+        const byId = Object.fromEntries(commands.map(c => [c.id, c]));
+        const correct = commands.map(c => c.id);
+        const shuffled = ['decisao', 'inicio', 'resultado', 'epi', 'cracha', 'turno'];
+        const slots = Array(6).fill(null);
+        let selected = null,
+            dragId = null,
+            playing = false,
+            scenario = 0,
+            step = 0,
+            completion = false;
+        const people = [{
+            name: 'Ana',
+            turno: 'A',
+            values: [true, true, true],
+            result: 'LIBERADO'
+        }, {
+            name: 'Carlos',
+            turno: 'B',
+            values: [true, false, true],
+            result: 'BLOQUEADO'
+        }, {
+            name: 'João',
+            turno: 'A',
+            values: [true, true, false],
+            result: 'BLOQUEADO'
+        }];
+        const $ = id => document.getElementById(id);
+
+        function el(tag, cls, text) {
+            const e = document.createElement(tag);
+            if (cls) e.className = cls;
+            if (text !== undefined) e.textContent = text;
+            return e
+        }
+
+        function block(id) {
+            const c = byId[id],
+                b = el('button', 'logic-piece' + (selected === id ? ' selected' : '') + (slots.includes(id) ? ' in-use' : ''));
+            b.type = 'button';
+            b.draggable = true;
+            b.dataset.id = id;
+            b.setAttribute('aria-pressed', String(selected === id));
+            b.append(el('span', 'em', c.icon));
+            const content = el('span');
+            content.append(el('strong', '', c.title), el('code', '', c.code));
+            b.append(content);
+            b.addEventListener('click', () => {
+                if (playing) return;
+                selected = (selected === id ? null : id);
+                render()
+            });
+            b.addEventListener('dragstart', e => {
+                if (playing) {
+                    e.preventDefault();
+                    return
+                }
+                dragId = id;
+                e.dataTransfer.setData('text/plain', id);
+                e.dataTransfer.effectAllowed = 'move'
+            });
+            b.addEventListener('dragend', () => {
+                dragId = null
+            });
+            return b
+        }
+
+        function place(id, index) {
+            if (playing || !byId[id]) return;
+            const old = slots.indexOf(id);
+            const displaced = slots[index];
+            if (old >= 0) slots[old] = displaced || null;
+            slots[index] = id;
+            selected = null;
+            clearSimulation();
+            setFeedback('Continue montando o programa. Use “Testar programa” para conferir a sequência.', '');
+            render()
+        }
+
+        function slotElement(index) {
+            const id = slots[index],
+                b = el('button', 'logic-slot' + (id ? ' filled' : ''));
+            b.type = 'button';
+            b.dataset.index = index;
+            b.append(el('span', 'number', `${index+1}º`));
+            const body = el('span', 'slot-body');
+            if (id) {
+                const c = byId[id];
+                body.append(el('strong', '', c.icon + ' ' + c.title), el('code', '', c.code));
+                b.append(body, el('span', 'remove', '×'))
+            } else {
+                body.textContent = 'Solte um comando aqui';
+                b.append(body)
+            }
+            b.setAttribute('aria-label', `${index+1}ª posição: ${id?byId[id].title:'vazia'}`);
+            b.addEventListener('click', () => {
+                if (playing) return;
+                if (selected) {
+                    place(selected, index)
+                } else if (id) {
+                    slots[index] = null;
+                    clearSimulation();
+                    setFeedback('Comando retirado. Escolha outro bloco para ocupar a posição.', '');
+                    render()
+                }
+            });
+            b.draggable = !!id;
+            b.addEventListener('dragstart', e => {
+                if (playing || !id) {
+                    e.preventDefault();
+                    return
+                }
+                dragId = id;
+                e.dataTransfer.setData('text/plain', id);
+                e.dataTransfer.effectAllowed = 'move'
+            });
+            b.addEventListener('dragover', e => {
+                if (playing) return;
+                e.preventDefault();
+                b.classList.add('dragover')
+            });
+            b.addEventListener('dragleave', () => b.classList.remove('dragover'));
+            b.addEventListener('drop', e => {
+                e.preventDefault();
+                b.classList.remove('dragover');
+                const id = e.dataTransfer.getData('text/plain') || dragId;
+                place(id, index)
+            });
+            return b
+        }
+
+        function linesForPreview() {
+            if (playing || completion) return commands.flatMap(c => c.lines);
+            return slots.flatMap(id => id ? byId[id].lines : [])
+        }
+
+        function renderCode(active = -1) {
+            const code = $('codePreview');
+            code.replaceChildren();
+            const lines = linesForPreview();
+            if (!lines.length) {
+                code.append(el('div', 'logic-line', '// Arraste blocos para formar seu código'));
+                return
+            }
+            lines.forEach((line, i) => {
+                const row = el('div', 'logic-line' + (i === active ? ' active' : ''));
+                row.append(el('span', 'ln', String(i + 1).padStart(2, '0') + ' '), document.createTextNode(line));
+                code.append(row)
+            })
+        }
+
+        function render() {
+            const pool = $('pool'),
+                area = $('slots');
+            pool.replaceChildren();
+            area.replaceChildren();
+            shuffled.forEach(id => pool.append(block(id)));
+            slots.forEach((_, i) => area.append(slotElement(i)));
+            $('counter').textContent = slots.filter(Boolean).length + '/6';
+            $('runBtn').disabled = playing;
+            renderCode()
+        }
+
+        function setFeedback(message, kind) {
+            $('feedback').textContent = message;
+            $('feedback').className = 'logic-info' + (kind ? ' ' + kind : '')
+        }
+
+        function clearSimulation() {
+            playing = false;
+            completion = false;
+            scenario = 0;
+            step = 0;
+            $('person').textContent = '👷 Funcionário aguardando programação';
+            $('gate').textContent = '🚧';
+            ['checkCracha', 'checkTurno', 'checkEpi'].forEach(id => {
+                $(id).className = 'check pending';
+                $(id).textContent = ({
+                    checkCracha: '🪪 Crachá · ?',
+                    checkTurno: '🕒 Turno · ?',
+                    checkEpi: '🦺 EPI · ?'
+                })[id]
+            });
+            $('stepInfo').textContent = 'A simulação começa após testar seu programa.';
+            $('progress').textContent = 'Aguardando código.';
+            $('nextBtn').disabled = true;
+            $('nextBtn').textContent = 'PRÓXIMA INSTRUÇÃO →';
+            $('finishLogic').classList.remove('show')
+        }
+        async function run() {
+            if (playing) return;
+            if (slots.some(x => !x)) {
+                setFeedback(`Faltam ${slots.filter(x=>!x).length} posição(ões). Preencha os seis espaços antes de executar.`, 'warn');
+                return
+            }
+            const btn = $('runBtn');
+            btn.disabled = true;
+            try {
+                const r = await fetch('/api/logica/check', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        sequence: slots
+                    })
+                });
+                if (!r.ok) throw Error('Erro HTTP');
+                const data = await r.json();
+                if (!data.correct) {
+                    const first = slots.findIndex((id, i) => id !== correct[i]);
+                    setFeedback(`Há uma instrução fora de ordem. Revise a posição ${first+1}º: qual informação o computador precisa ter nesse momento?`, 'warn');
+                    return
+                }
+                playing = true;
+                completion = true;
+                scenario = 0;
+                step = 0;
+                setFeedback('✅ Sequência correta! Agora veja cada instrução agir na catraca.', 'good');
+                showStep();
+                render()
+            } catch (e) {
+                setFeedback('Não foi possível verificar a sequência. Confira se a aplicação Flask está em execução.', 'warn')
+            } finally {
+                btn.disabled = playing
+            }
+        }
+        const steps = [{
+            line: 0,
+            info: '🚀 O programa de controle de acesso começa.'
+        }, {
+            line: 1,
+            info: '🪪 O sistema lê o crachá do funcionário.',
+            field: 0
+        }, {
+            line: 2,
+            info: '🕒 O sistema confere se o turno está autorizado.',
+            field: 1
+        }, {
+            line: 3,
+            info: '🦺 O sistema confere o EPI obrigatório.',
+            field: 2
+        }, {
+            line: 4,
+            info: '🧠 if verifica se as três condições são verdadeiras.'
+        }, {
+            line: null,
+            info: '🚦 A catraca libera ou bloqueia conforme a decisão.'
+        }];
+
+        function showStep() {
+            const person = people[scenario],
+                st = steps[step];
+            $('person').textContent = `👷 ${person.name} · Turno ${person.turno} · Cenário ${scenario+1}/3`;
+            $('progress').textContent = `Cenário ${scenario+1}/3 · Instrução ${step+1}/6`;
+            $('stepInfo').textContent = st.info;
+            const ids = ['checkCracha', 'checkTurno', 'checkEpi'],
+                names = ['🪪 Crachá', '🕒 Turno', '🦺 EPI'];
+            ids.forEach((id, j) => {
+                const known = step >= j + 1;
+                $(id).className = 'check ' + (known ? (person.values[j] ? 'pass' : 'fail') : 'pending');
+                $(id).textContent = names[j] + ' · ' + (known ? (person.values[j] ? 'OK' : 'NÃO') : '?')
+            });
+            $('gate').textContent = step < 5 ? '🚧' : person.values.every(Boolean) ? '🟢' : '🔒';
+            renderCode(step === 5 ? (person.values.every(Boolean) ? 5 : 7) : st.line);
+            $('nextBtn').disabled = false;
+            $('nextBtn').textContent = step === 5 ? (scenario === 2 ? 'CONCLUIR MISSÃO ✓' : 'PRÓXIMO FUNCIONÁRIO →') : 'PRÓXIMA INSTRUÇÃO →'
+        }
+
+        function advance() {
+            if (!playing) return;
+            if (step < 5) {
+                step++;
+                showStep();
+                return
+            }
+            if (scenario < 2) {
+                scenario++;
+                step = 0;
+                showStep();
+                return
+            }
+            playing = false;
+            $('nextBtn').disabled = true;
+            $('progress').textContent = '✅ 3 cenários testados!';
+            setFeedback('🎉 Programa aprovado em três testes: um acesso liberado e dois bloqueados.', 'good');
+            $('finishLogic').classList.add('show')
+        }
+
+        function reset() {
+            slots.fill(null);
+            selected = null;
+            clearSimulation();
+            setFeedback('Monte as seis partes do código para testar sua lógica.', '');
+            render()
+        }
+        $('runBtn').addEventListener('click', run);
+        $('resetBtn').addEventListener('click', reset);
+        $('nextBtn').addEventListener('click', advance);
+        $('finishClose').addEventListener('click', () => $('finishLogic').classList.remove('show'));
+        render();
+    </script>
+</body>
+
+</html>

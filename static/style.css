@@ -62,3 +62,10 @@
 .finish-icon{font-size:44px}.finish-card h2{font-size:26px;margin:7px 0}.finish-role{display:inline-block;margin:5px 0 11px;padding:7px 12px;border-radius:999px;background:#a45cff20;border:1px solid #a45cff66;color:#dabdff;font-size:11px;font-weight:950;letter-spacing:.7px}.finish-card p{color:#c8d5e8;line-height:1.5;margin:8px auto;max-width:455px}.finish-concept{margin:14px 0;padding:11px;border-radius:12px;background:#42e69b13;border:1px solid #42e69b44;color:#80f2c1;font-weight:900}.finish-close{border:0;border-radius:12px;padding:11px 20px;background:#ffffff10;color:white;font-weight:900;cursor:pointer}
 .codeblock.python-block{font-family:Consolas,"Courier New",monospace;font-size:11px;line-height:1.35}
 .python-tag{display:inline-block;margin-bottom:8px;padding:5px 8px;border-radius:7px;background:#3776ab25;border:1px solid #5f9bd055;color:#8fc8f1;font:800 10px Consolas,monospace}
+
+/* Navegação direta acessível entre as quatro estações */
+.storybar a.story-step{display:block;text-decoration:none;cursor:pointer;transition:background .15s,border-color .15s,color .15s;font-size:13px;line-height:1.35;padding:11px 8px;color:#c4d6ec;border-color:#ffffff29}
+.storybar a.story-step:hover{background:#224764;border-color:var(--cyan);color:#fff}
+.storybar a.story-step:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.storybar a.story-step.current{color:#7eefff;font-weight:950;border-color:#28d7f77d}
+@media(max-width:550px){.storybar{grid-template-columns:repeat(2,minmax(0,1fr))}.storybar a.story-step{font-size:12px}}
